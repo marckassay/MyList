@@ -18,8 +18,10 @@ function AddEditItem({ createItem, editItem }: AddEditItemProps) {
   };
 
   const onPriceChangeResult = (e: any) => {
-    if (typeof parseInt(e.target.value) === "number") {
-      setItem({ ...item, price: parseInt(e.target.value) });
+    const result1 = e.target.value;
+    const result = parseInt(result1 === "" ? 0 : result1);
+    if (!isNaN(result) && typeof result === "number") {
+      setItem({ ...item, price: result });
     }
   };
 
@@ -93,12 +95,6 @@ function AddEditItem({ createItem, editItem }: AddEditItemProps) {
                     name="price"
                     id="price"
                     value={item.price}
-                    // @see https://stackoverflow.com/a/65138192/648789
-                    onKeyPress={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
                     onChange={onPriceChangeResult}
                     className="pointer-events-auto p-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full h-8 pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
                     placeholder="0"
