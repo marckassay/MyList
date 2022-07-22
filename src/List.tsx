@@ -26,7 +26,7 @@ function Item({ item, onEdit, onDelete }: ItemProps) {
       onMouseOut={handleMouseOut}
       className="flex flex-row gap-2 w-full"
     >
-      <div className="text-lg text-left font-mono">{item.name}</div>
+      <div className="text-lg text-left font-mono select-all">{item.name}</div>
       <div className="grow"></div>
       <div className="text-lg text-right font-mono font-semibold">
         ${item.price}

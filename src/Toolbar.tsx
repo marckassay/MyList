@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { GroceryItem } from "./types";
 import { emptyGroceryItem, isGroceryItemValid } from "./App";
+import { PencilIcon, CheckCircleIcon, XIcon } from "@heroicons/react/solid";
 
 export interface AddEditItemProps {
   createItem: (item: GroceryItem) => Promise<void>;
@@ -120,21 +121,34 @@ function AddEditItem({ createItem, editItem }: AddEditItemProps) {
               </div>
             </div>
           </div>
-          <div className="px-4 py-3 bg-blue-300 text-right sm:px-6">
+          <div className="px-4 py-3 bg-blue-300 text-right select-none sm:px-6">
             {isEditing && (
               <button
                 onClick={onReset}
-                className="mr-2 select-none inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 disabled:bg-gray-500 disabled:cursor-not-allowed hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="mr-2 py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-indigo-600 disabled:bg-gray-500 disabled:cursor-not-allowed hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
-                Cancel
+                <span className="inline-flex">
+                  <XIcon className="h-5 w-5" />
+                  Cancel
+                </span>
               </button>
             )}
             <button
               type="submit"
               disabled={!isValid}
-              className="select-none inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 disabled:bg-gray-500 disabled:cursor-not-allowed hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-indigo-600 disabled:bg-gray-500 disabled:cursor-not-allowed hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              {!isEditing ? "Add Item" : "Update Item"}
+              {!isEditing ? (
+                <span className="inline-flex gap-px">
+                  <PencilIcon className="h-5 w-5" />
+                  Add Item
+                </span>
+              ) : (
+                <span className="inline-flex gap-px">
+                  <CheckCircleIcon className="h-5 w-5" />
+                  Update Item
+                </span>
+              )}
             </button>
           </div>
         </div>
