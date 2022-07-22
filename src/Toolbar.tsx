@@ -58,10 +58,10 @@ function AddEditItem({ createItem, editItem }: AddEditItemProps) {
         <div className="shadow overflow-hidden sm:rounded-md">
           <div className="px-4 py-5 bg-blue-200 sm:p-6">
             <div className="grid grid-cols-6 gap-6">
-              <div className="col-span-4 sm:col-span-3">
+              <div className="col-span-4 sm:col-span-3 select-none">
                 <label
                   htmlFor="item-name"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-700 "
                 >
                   Item
                 </label>
@@ -79,11 +79,11 @@ function AddEditItem({ createItem, editItem }: AddEditItemProps) {
               <div className="col-span-3 sm:col-span-3">
                 <label
                   htmlFor="price"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-700 select-none"
                 >
                   Price
                 </label>
-                <div className="mt-1 relative rounded-md shadow-sm">
+                <div className="mt-1 relative rounded-md shadow-sm select-none">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <span className="text-gray-500 sm:text-sm">$</span>
                   </div>
@@ -99,7 +99,7 @@ function AddEditItem({ createItem, editItem }: AddEditItemProps) {
                       }
                     }}
                     onChange={onPriceChangeResult}
-                    className="p-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full h-8 pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
+                    className="pointer-events-auto p-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full h-8 pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
                     placeholder="0"
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center">
