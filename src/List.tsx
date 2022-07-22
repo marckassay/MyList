@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { GroceryItem } from "./types";
+import { PencilIcon, TrashIcon } from "@heroicons/react/solid";
 
 export interface ItemMutate {
   onEdit: (item: GroceryItem) => void;
@@ -31,19 +32,13 @@ function Item({ item, onEdit, onDelete }: ItemProps) {
         ${item.price}
       </div>
       {isHovering && (
-        <div className="flex flex-row">
-          <div
-            onClick={() => onEdit(item)}
-            className="text-md text-left select-none underline"
-          >
-            edit
+        <div className="flex flex-row cursor-pointer">
+          <div onClick={() => onEdit(item)}>
+            <PencilIcon className="h-5 w-5 hover:text-blue-500" />
           </div>
           <div className="flex-initial w-2"></div>
-          <div
-            onClick={() => onDelete(item)}
-            className="text-md text-left select-none underline text-red-600"
-          >
-            delete
+          <div onClick={() => onDelete(item)}>
+            <TrashIcon className="h-5 w-5 hover:text-red-600" />
           </div>
         </div>
       )}
