@@ -1,11 +1,28 @@
 import { Entity, GroceryItem } from "./types";
 import { Toolbar } from "./Toolbar";
-import { List } from "./List";
+import { List } from "./list/List";
 import { useState } from "react";
+import { ConfirmationModal } from "./ConfirmationModal";
 
 export const emptyGroceryItem = { id: 0, name: "", price: 0 };
+
+/**
+ * Used for form validation; prior to `POST` in the context of
+ * Restful API. In otherwords, the `id` value may be falsely.
+ */
 export const isGroceryItemValid = (item?: GroceryItem) => {
   return item ? item.name.length > 1 && item.price > 0 : false;
+};
+
+/**
+ * Similar to `isGroceryItemValid` predicate, this predicate
+ * verifies the shape; it checks for `id` in addition to all
+ * other properties. But *not* their values.
+ */
+export const isGroceryItemEntity = (
+  item?: GroceryItem
+): item is GroceryItem => {
+  return item ? "id" in item && "name" in item && "price" in item : false;
 };
 
 const getMaxId = (items: Entity[]) =>
@@ -25,9 +42,11 @@ const initialItems: GroceryItem[] = [
 export default function App() {
   const [items, setItems] = useState<GroceryItem[]>(initialItems);
   const [editItem, setEditItem] = useState<GroceryItem | undefined>();
+  const [confirmDeleteItem, setDeleteItem] = useState<
+    GroceryItem | undefined
+  >();
 
   const createItem = (item: GroceryItem) => {
-    console.log(JSON.stringify(item));
     if (isGroceryItemValid(item)) {
       // an id of 0 indicates it's new, versus user edited it.
       if (item.id !== 0) {
@@ -54,16 +73,17 @@ export default function App() {
 
   const updateItem = (item: GroceryItem) => setEditItem({ ...item });
 
-  const deleteItem = (item: GroceryItem) => {
-    const itemsCopy = [...items];
-    const index = itemsCopy.findIndex(
-      (i) => i.name === item.name && i.price === item.price
-    );
+  const deleteItem = (item: GroceryItem | undefined) => {
+    if (isGroceryItemEntity(item)) {
+      const itemsCopy = [...items];
+      const index = itemsCopy.findIndex((i) => i.id === item.id);
 
-    if (index > -1) {
-      itemsCopy.splice(index, 1);
-      setItems(itemsCopy);
+      if (index > -1) {
+        itemsCopy.splice(index, 1);
+        setItems(itemsCopy);
+      }
     }
+    setDeleteItem(undefined);
   };
 
   return (
@@ -73,7 +93,16 @@ export default function App() {
           Grocery List
         </div>
         <Toolbar addEditItemProps={{ createItem, editItem }} />
-        <List items={items} onEdit={updateItem} onDelete={deleteItem} />
+        <ConfirmationModal
+          item={confirmDeleteItem}
+          onConfirmDelete={(value) => deleteItem(value)}
+        >
+          <List
+            items={items}
+            onEdit={updateItem}
+            onDelete={(item) => setDeleteItem(item)}
+          />
+        </ConfirmationModal>
       </div>
     </div>
   );
