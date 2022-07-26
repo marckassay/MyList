@@ -75,6 +75,14 @@ export default function App() {
 
   const deleteItem = (item: GroceryItem | undefined) => {
     if (isGroceryItemEntity(item)) {
+      // prior to the user confirmed to delete this `item has
+      // the *same* item (by matching `id`) in the Toolbar for editing,
+      // lets remove it now to prevent conflicting results if they continue
+      // to edit that item.
+      if (editItem?.id === item.id) {
+        setEditItem(undefined);
+      }
+
       const itemsCopy = [...items];
       const index = itemsCopy.findIndex((i) => i.id === item.id);
 
