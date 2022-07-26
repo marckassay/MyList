@@ -21,6 +21,14 @@ export function ConfirmationModal<T>({
   onConfirmDelete,
   children,
 }: ConfirmationModalProps<T> & Children) {
+  const parsedIterableItem = () => {
+    const result = [];
+    for (const field in item) {
+      if (field !== "id") result.push(`${field}: ${item[field]}`);
+    }
+    return result;
+  };
+
   return (
     <>
       {children}
@@ -64,9 +72,17 @@ export function ConfirmationModal<T>({
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
-                        Your item will be deleted if you proceed to click on the
-                        'Delete' button below.
-                        <br></br>
+                        The following item will be deleted if you proceed to
+                        click on the 'Delete' button:
+                      </p>
+                      <div className="mt-2"></div>
+                      {parsedIterableItem().map((value, index) => (
+                        <div key={index} className="indent-2 font-mono">
+                          {value}
+                        </div>
+                      ))}
+                      <div className="mb-2"></div>
+                      <p className="text-sm text-gray-500">
                         Otherwise click on the 'Cancel' button.
                       </p>
                     </div>
