@@ -11,7 +11,7 @@ export function List(props: ListProps<GroceryItem>) {
     .reduce((previousprice, price) => previousprice + price, 0);
 
   return (
-    <div className="flex flex-col m-8 px-8 gap-x-2">
+    <div className="flex flex-col my-4 mx-16 gap-x-2 select-none">
       {total < 30 ? (
         <div className="text-lg text-right text-green-600 font-semibold">
           Grand total: ${total}

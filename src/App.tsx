@@ -97,7 +97,7 @@ export default function App() {
   return (
     <div className="container mx-auto p-4">
       <div className="flex mx-auto justify-center flex-col rounded-lg shadow-md bg-blue-100 w-1/3">
-        <div className="text-2xl text-center p-2 font-bold text-blue-900 underline">
+        <div className="text-2xl text-center p-2 font-bold text-blue-900 underline select-none">
           Grocery List
         </div>
         <Toolbar addEditItemProps={{ createItem, editItem }} />
