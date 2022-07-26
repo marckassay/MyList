@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { GroceryItem } from "./types";
-import { emptyGroceryItem, isGroceryItemValid } from "./App";
+import { GroceryItem } from "../types";
+import { emptyGroceryItem, isGroceryItemValid } from "../utils";
 import { PencilIcon, CheckCircleIcon, XIcon } from "@heroicons/react/solid";
 
-export interface AddEditItemProps {
+export interface CreateEditItemProps {
   createItem: (item: GroceryItem) => Promise<void>;
   editItem?: GroceryItem;
 }
 
-function AddEditItem({ createItem, editItem }: AddEditItemProps) {
+export function CreateEditItem({ createItem, editItem }: CreateEditItemProps) {
   const [isEditing, setEditing] = useState<boolean>(false);
   const [item, setItem] = useState<GroceryItem>(emptyGroceryItem);
   const [isValid, setValidate] = useState<boolean>(false);
@@ -75,7 +75,7 @@ function AddEditItem({ createItem, editItem }: AddEditItemProps) {
                   placeholder="Enter name of item"
                   value={item.name}
                   onChange={onNameChangeResult}
-                  className="p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full h-8 shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  className="p-2 mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full h-8 shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
 
@@ -96,7 +96,7 @@ function AddEditItem({ createItem, editItem }: AddEditItemProps) {
                     id="price"
                     value={item.price}
                     onChange={onPriceChangeResult}
-                    className="pointer-events-auto p-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full h-8 pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
+                    className="pointer-events-auto p-2 focus:ring-blue-500 focus:border-blue-500 block w-full h-8 pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
                     placeholder="0"
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center">
@@ -106,7 +106,7 @@ function AddEditItem({ createItem, editItem }: AddEditItemProps) {
                     <select
                       id="currency"
                       name="currency"
-                      className="focus:ring-indigo-500 focus:border-indigo-500 h-8 py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md"
+                      className="focus:ring-blue-500 focus:border-blue-500 h-8 py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md"
                     >
                       <option>USD</option>
                       <option>CAD</option>
@@ -149,18 +149,6 @@ function AddEditItem({ createItem, editItem }: AddEditItemProps) {
           </div>
         </div>
       </form>
-    </div>
-  );
-}
-
-export interface ToolbarProps {
-  addEditItemProps: AddEditItemProps;
-}
-
-export function Toolbar({ addEditItemProps }: ToolbarProps) {
-  return (
-    <div className="flex mx-auto gap-x-2">
-      <AddEditItem {...addEditItemProps} />
     </div>
   );
 }

@@ -15,7 +15,3 @@ export interface ItemMutate {
   onEdit: (item: GroceryItem) => void;
   onDelete: (item: GroceryItem) => void;
 }
-
-export interface ItemProps extends ItemMutate {
-  item: GroceryItem;
-}

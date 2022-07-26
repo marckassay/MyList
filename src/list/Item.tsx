@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { ItemProps } from "../types";
+import { GroceryItem, ItemMutate } from "../types";
 import { PencilIcon, TrashIcon } from "@heroicons/react/solid";
+
+export interface ItemProps extends ItemMutate {
+  item: GroceryItem;
+}
 
 export function Item({ item, onEdit, onDelete }: ItemProps) {
   const [isHovering, setIsHovering] = useState(false);
