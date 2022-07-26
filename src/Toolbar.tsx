@@ -121,10 +121,10 @@ function AddEditItem({ createItem, editItem }: AddEditItemProps) {
             {isEditing && (
               <button
                 onClick={onReset}
-                className="mr-2 py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-indigo-600 disabled:bg-gray-500 disabled:cursor-not-allowed hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="mr-2 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
               >
                 <span className="inline-flex">
-                  <XIcon className="h-5 w-5" />
+                  <XIcon className="h-4 w-4 self-center" />
                   Cancel
                 </span>
               </button>
@@ -132,16 +132,16 @@ function AddEditItem({ createItem, editItem }: AddEditItemProps) {
             <button
               type="submit"
               disabled={!isValid}
-              className="py-2 px-4 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-indigo-600 disabled:bg-gray-500 disabled:cursor-not-allowed hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 disabled:text-gray-500 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:bg-gray-300 disabled:cursor-not-allowed"
             >
               {!isEditing ? (
                 <span className="inline-flex gap-px">
-                  <PencilIcon className="h-5 w-5" />
+                  <PencilIcon className="h-4 w-4 self-center" />
                   Add Item
                 </span>
               ) : (
                 <span className="inline-flex gap-px">
-                  <CheckCircleIcon className="h-5 w-5" />
+                  <CheckCircleIcon className="h-4 w-4 self-center" />
                   Update Item
                 </span>
               )}

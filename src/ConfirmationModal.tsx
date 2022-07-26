@@ -1,4 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
+import { ExclamationCircleIcon, XIcon } from "@heroicons/react/solid";
 import { Fragment } from "react";
 import { Children } from "./types";
 
@@ -76,14 +77,20 @@ export function ConfirmationModal<T>({
                         className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                         onClick={() => onConfirmDelete(undefined)}
                       >
-                        Cancel
+                        <span className="inline-flex">
+                          <XIcon className="h-4 w-4 self-center" />
+                          Cancel
+                        </span>
                       </button>
                       <button
                         type="button"
                         className="inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
                         onClick={() => onConfirmDelete(item)}
                       >
-                        Delete
+                        <span className="inline-flex">
+                          <ExclamationCircleIcon className="h-4 w-4 self-center" />
+                          Delete
+                        </span>
                       </button>
                     </div>
                   </Dialog.Panel>
