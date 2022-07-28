@@ -6,7 +6,7 @@ import { ConfirmationModal } from "./ConfirmationModal";
 import {
   initialItems,
   isGroceryItemValid,
-  getMaxId,
+  getNextGreatestIdValue,
   isGroceryItemEntity,
 } from "./utils";
 
@@ -34,12 +34,11 @@ export default function App() {
           return s;
         });
       } else {
-        item.id = getMaxId(items) + 1;
+        item.id = getNextGreatestIdValue(items);
         setItems((s) => [item, ...s]);
       }
     }
     setEditItem(undefined);
-    return Promise.resolve();
   };
 
   const updateItem = (item: GroceryItem) => setEditItem({ ...item });

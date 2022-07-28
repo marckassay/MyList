@@ -27,10 +27,16 @@ export const isGroceryItemEntity = (
   return item ? "id" in item && "name" in item && "price" in item : false;
 };
 
-export const getMaxId = (items: Entity[]) =>
+/**
+ * Used to simulate what an entity framework would similarly do
+ * for a collection. That is, when a new entity is created, that
+ * entity will have the greatest id interger value out of all in
+ * collection.
+ */
+export const getNextGreatestIdValue = (items: Entity[]) =>
   items.reduce((previousId, item) => {
     if (previousId <= item.id) {
       previousId = item.id;
     }
-    return previousId;
+    return previousId + 1;
   }, 1);

@@ -4,7 +4,7 @@ import { emptyGroceryItem, isGroceryItemValid } from "../utils";
 import { PencilIcon, CheckCircleIcon, XIcon } from "@heroicons/react/solid";
 
 export interface CreateEditItemProps {
-  createItem: (item: GroceryItem) => Promise<void>;
+  createItem: (item: GroceryItem) => void;
   editItem?: GroceryItem;
 }
 
