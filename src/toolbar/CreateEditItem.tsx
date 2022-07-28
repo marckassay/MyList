@@ -13,32 +13,30 @@ export function CreateEditItem({ createItem, editItem }: CreateEditItemProps) {
   const [item, setItem] = useState<GroceryItem>(emptyGroceryItem);
   const [isValid, setValidate] = useState<boolean>(false);
 
-  const onNameChangeResult = (e: any) => {
+  const onNameChangeResult = (e: React.ChangeEvent<HTMLInputElement>) => {
     setItem({ ...item, name: e.target.value });
   };
 
-  const onPriceChangeResult = (e: any) => {
+  const onPriceChangeResult = (e: React.ChangeEvent<HTMLInputElement>) => {
     const result1 = e.target.value;
-    const result = parseInt(result1 === "" ? 0 : result1);
+    const result = parseInt(result1 === "" ? "0" : result1);
     if (!isNaN(result) && typeof result === "number") {
       setItem({ ...item, price: result });
     }
   };
 
-  const onSubmit = (e: any) => {
+  const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     if (isGroceryItemValid(item)) {
       createItem(item);
-      onReset(e);
+      onReset();
     }
 
     e.preventDefault();
   };
 
-  const onReset = (e: any) => {
+  const onReset = () => {
     setItem(emptyGroceryItem);
     setEditing(false);
-
-    e.preventDefault();
   };
 
   useEffect(() => {
