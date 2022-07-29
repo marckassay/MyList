@@ -3,12 +3,12 @@ import { GroceryItem } from "../types";
 import { emptyGroceryItem, isGroceryItemValid } from "../utils";
 import { PencilIcon, CheckCircleIcon, XIcon } from "@heroicons/react/solid";
 
-export interface CreateEditItemProps {
-  createItem: (item: GroceryItem) => void;
+export interface ModifyItemProps {
+  updateItems: (item: GroceryItem) => void;
   editItem?: GroceryItem;
 }
 
-export function CreateEditItem({ createItem, editItem }: CreateEditItemProps) {
+export function ModifyItem({ updateItems, editItem }: ModifyItemProps) {
   const [isEditing, setEditing] = useState<boolean>(false);
   const [item, setItem] = useState<GroceryItem>(emptyGroceryItem);
   const [isValid, setValidate] = useState<boolean>(false);
@@ -27,7 +27,7 @@ export function CreateEditItem({ createItem, editItem }: CreateEditItemProps) {
 
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     if (isGroceryItemValid(item)) {
-      createItem(item);
+      updateItems(item);
       onReset();
     }
 

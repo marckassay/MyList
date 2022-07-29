@@ -13,11 +13,11 @@ import {
 export default function App() {
   const [items, setItems] = useState<GroceryItem[]>(initialItems);
   const [editItem, setEditItem] = useState<GroceryItem | undefined>();
-  const [confirmDeleteItem, setDeleteItem] = useState<
+  const [confirmDeleteItem, setConfirmDeleteItem] = useState<
     GroceryItem | undefined
   >();
 
-  const createItem = (item: GroceryItem) => {
+  const updateItems = (item: GroceryItem) => {
     if (isGroceryItemValid(item)) {
       // an id of 0 indicates it's new, versus user edited it.
       if (item.id !== 0) {
@@ -41,14 +41,11 @@ export default function App() {
     setEditItem(undefined);
   };
 
-  const updateItem = (item: GroceryItem) => setEditItem({ ...item });
-
   const deleteItem = (item: GroceryItem | undefined) => {
     if (isGroceryItemEntity(item)) {
-      // prior to the user confirmed to delete this `item has
-      // the *same* item (by matching `id`) in the Toolbar for editing,
-      // lets remove it now to prevent conflicting results if they continue
-      // to edit that item.
+      // prior to user confirmed to delete this `item`, they may have
+      // the *same* item (by matching `id`) in the Toolbar for editing.
+      // if so, remove it now to prevent possible conflicting results
       if (editItem?.id === item.id) {
         setEditItem(undefined);
       }
@@ -61,7 +58,7 @@ export default function App() {
         setItems(itemsCopy);
       }
     }
-    setDeleteItem(undefined);
+    setConfirmDeleteItem(undefined);
   };
 
   return (
@@ -70,15 +67,15 @@ export default function App() {
         <div className="text-2xl text-center p-2 font-bold text-blue-900 underline select-none">
           Grocery List
         </div>
-        <Toolbar addEditItemProps={{ createItem, editItem }} />
+        <Toolbar modifyItemProps={{ updateItems, editItem }} />
         <ConfirmationModal
           item={confirmDeleteItem}
           onConfirmDelete={(value) => deleteItem(value)}
         >
           <List
             items={items}
-            onEdit={updateItem}
-            onDelete={(item) => setDeleteItem(item)}
+            onEdit={(item) => setEditItem({ ...item })}
+            onDelete={(item) => setConfirmDeleteItem(item)}
           />
         </ConfirmationModal>
       </div>

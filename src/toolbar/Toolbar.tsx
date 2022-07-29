@@ -1,13 +1,13 @@
-import { CreateEditItem, CreateEditItemProps } from "./CreateEditItem";
+import { ModifyItem, ModifyItemProps } from "./ModifyItem";
 
 export interface ToolbarProps {
-  addEditItemProps: CreateEditItemProps;
+  modifyItemProps: ModifyItemProps;
 }
 
-export function Toolbar({ addEditItemProps }: ToolbarProps) {
+export function Toolbar({ modifyItemProps }: ToolbarProps) {
   return (
     <div className="flex mx-auto gap-x-2">
-      <CreateEditItem {...addEditItemProps} />
+      <ModifyItem {...modifyItemProps} />
     </div>
   );
 }
