@@ -30,8 +30,8 @@ export const isGroceryItemEntity = (
 /**
  * Used to simulate what an entity framework would similarly do
  * for a collection. That is, when a new entity is created, that
- * entity will have the greatest id interger value out of all in
- * collection.
+ * entity will have the greatest id interger (or unique) value
+ * out of all in collection.
  */
 export const getNextGreatestIdValue = (items: Entity[]) =>
   items.reduce((previousId, item) => {
