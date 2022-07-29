@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# typically commitlint is in the 'prepare-commit' Git hook.
+# Having it here, will abort when commit message is not conformed
+# correctly *before* tests, linter and formatter is ran.
+npx --no -- commitlint --edit $1
+npm run pre-commit
