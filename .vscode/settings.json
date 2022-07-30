@@ -1,5 +1,10 @@
 {
+  "files.eol": "\n",
   "editor.formatOnSave": true,
   "npm.packageManager": "npm",
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "css.customData": ["./css-data.json"],
+  "emmet.includeLanguages": {
+    "postcss": "css"
+  }
 }

@@ -1,6 +1,9 @@
 {
   "settings": {
     "react": {
+      "createClass": "createReactClass",
+      "pragma": "React",
+      "fragment": "Fragment",
       "version": "detect"
     }
   },
@@ -10,8 +13,8 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
     "plugin:react/jsx-runtime",
     "prettier"
   ],
@@ -24,13 +27,15 @@
     "sourceType": "module"
   },
   "plugins": ["react", "react-hooks", "@typescript-eslint"],
-  "ignorePatterns": ["/dist/", "**/vendor/*.js", "*.js"],
+  "ignorePatterns": ["/dist/", "**/vendor/*.js", "*.js", "*.css"],
   "rules": {
     "indent": ["error", 2],
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "double"],
     "semi": ["error", "always"],
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error"
   }
 }

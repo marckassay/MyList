@@ -3,6 +3,7 @@
     "esbenp.prettier-vscode",
     "Orta.vscode-jest",
     "dbaeumer.vscode-eslint",
-    "editorconfig.editorconfig"
+    "editorconfig.editorconfig",
+    "csstools.postcss"
   ]
 }

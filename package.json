@@ -8,7 +8,7 @@
     "build": "vite build",
     "dev": "vite",
     "test": "npx jest",
-    "lint": "npx eslint --fix",
+    "lint": "npx eslint src/** --fix",
     "prepare": "husky install",
     "pre-commit": "npm test && npx pretty-quick --staged && npm run lint"
   },
