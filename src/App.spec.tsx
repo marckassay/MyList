@@ -7,7 +7,7 @@ describe("App", () => {
     expect(screen.queryByText(/Grocery List/)).toBeTruthy();
 
     expect(
-      container.querySelector('[id="headlessui-portal-root"]')
+      container.querySelector("[id=\"headlessui-portal-root\"]")
     ).toBeFalsy();
   });
 });

@@ -73,7 +73,8 @@ export function ConfirmationModal<T>({
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
                         The following item will be deleted if you proceed to
-                        click on the 'Delete' button:
+                        click on the <span className="italic">Delete</span>{" "}
+                        button:
                       </p>
                       <div className="mt-2"></div>
                       {parsedIterableItem().map((value, index) => (
@@ -83,7 +84,8 @@ export function ConfirmationModal<T>({
                       ))}
                       <div className="mb-2"></div>
                       <p className="text-sm text-gray-500">
-                        Otherwise click on the 'Cancel' button.
+                        Otherwise click on the{" "}
+                        <span className="italic">Cancel</span> button.
                       </p>
                     </div>
 
