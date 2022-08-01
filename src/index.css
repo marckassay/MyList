@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.icon-standard {
+  @apply h-4 w-4 self-center;
+}
+
+.button-standard {
+  @apply inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:text-gray-500 disabled:bg-gray-300/60 disabled:cursor-not-allowed;
+}
+
+.button-danger {
+  @apply button-standard;
+  @apply bg-red-100 text-red-900 hover:bg-red-200 focus-visible:ring-red-500 !important;
+}

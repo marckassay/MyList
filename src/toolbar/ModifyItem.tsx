@@ -117,12 +117,9 @@ export function ModifyItem({ updateItems, editItem }: ModifyItemProps) {
           </div>
           <div className="px-4 py-3 bg-blue-300 text-right select-none sm:px-6">
             {isEditing && (
-              <button
-                onClick={onReset}
-                className="mr-2 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-              >
+              <button onClick={onReset} className="mr-2 button-standard">
                 <span className="inline-flex">
-                  <XIcon className="h-4 w-4 self-center" />
+                  <XIcon className="icon-standard" />
                   Cancel
                 </span>
               </button>
@@ -130,16 +127,16 @@ export function ModifyItem({ updateItems, editItem }: ModifyItemProps) {
             <button
               type="submit"
               disabled={!isValid}
-              className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 disabled:text-gray-500 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:bg-gray-300/60 disabled:cursor-not-allowed"
+              className="button-standard"
             >
               {!isEditing ? (
                 <span className="inline-flex gap-px">
-                  <PencilIcon className="h-4 w-4 self-center" />
+                  <PencilIcon className="icon-standard" />
                   Add Item
                 </span>
               ) : (
                 <span className="inline-flex gap-px">
-                  <CheckCircleIcon className="h-4 w-4 self-center" />
+                  <CheckCircleIcon className="icon-standard" />
                   Update Item
                 </span>
               )}

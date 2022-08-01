@@ -23,11 +23,11 @@ export function Item({ item, onEdit, onDelete }: ItemProps) {
       {isHovering ? (
         <div className="flex flex-row cursor-pointer self-center">
           <div onClick={() => onEdit(item)}>
-            <PencilIcon className="h-4 w-4 hover:text-blue-500" />
+            <PencilIcon className="icon-standard hover:text-blue-500" />
           </div>
           <div className="flex-initial w-2"></div>
           <div onClick={() => onDelete(item)}>
-            <TrashIcon className="h-4 w-4 hover:text-red-600" />
+            <TrashIcon className="icon-standard hover:text-red-900" />
           </div>
         </div>
       ) : (
