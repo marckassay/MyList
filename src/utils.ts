@@ -6,6 +6,14 @@ export const initialItems: GroceryItem[] = [
   { id: 3, name: "Watermelon", price: 7 },
 ];
 
+export const grandTotal: number = initialItems
+  .map((item) => item.price)
+  .reduce((previousprice, price) => previousprice + price, 0);
+
+export const calculateGrandTotal = (items: GroceryItem[]) =>
+  items
+    .map((item) => item.price)
+    .reduce((previousprice, price) => previousprice + price, 0);
 export const emptyGroceryItem = { id: 0, name: "", price: 0 };
 
 /**
