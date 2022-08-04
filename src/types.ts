@@ -1,5 +1,5 @@
 export interface Entity {
-  id: number;
+  id: string | 0;
 }
 
 export interface Children {
@@ -9,22 +9,6 @@ export interface Children {
 export interface GroceryItem extends Entity {
   name: string;
   price: number;
-}
-
-export interface ItemMutate {
-  /**
-   * The initial callback prop to handle editing an item. Currently this in-turns
-   * sends the `item` to toolbar form to modified or not. So when called, it's undeterminied
-   * if this `item` will actually be modified.
-   */
-  onEdit: (item: GroceryItem) => void;
-
-  /**
-   * The initial callback prop to handle deleting an item. Currently this in-turns
-   * call a dialog to have the user confirm. So when called, it's undeterminied
-   * if this `item` will actually be deleted.
-   */
-  onDelete: (item: GroceryItem) => void;
 }
 
 /**
@@ -70,7 +54,8 @@ export interface AppActions {
   cancel: () => void;
   submit: (item: GroceryItem) => void;
   edit: (item: GroceryItem) => void;
-  trash: (item: GroceryItem) => void;
+  confirmToTrash: (item: GroceryItem) => void;
+  trash: (value: boolean) => void;
 }
 
 export type AppState = {

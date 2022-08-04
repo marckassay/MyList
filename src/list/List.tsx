@@ -1,34 +1,26 @@
-import { GroceryItem, ItemMutate } from "../types";
+import { useAppStore } from "../store/App.store";
 import { Item } from "./Item";
 
-export interface ListProps<GroceryItem> extends ItemMutate {
-  items: Array<GroceryItem>;
-}
-
-export function List(props: ListProps<GroceryItem>) {
-  const total = props.items
-    .map((item) => item.price)
-    .reduce((previousprice, price) => previousprice + price, 0);
+export function List() {
+  const {
+    list: { grandTotal, items },
+  } = useAppStore();
 
   return (
     <div className="flex flex-col my-4 mx-16 gap-x-2 select-none">
-      {total < 30 ? (
+      {grandTotal < 30 ? (
         <div className="text-lg text-right text-green-600 font-semibold">
-          Grand total: ${total}
+          Grand total: ${grandTotal}
         </div>
       ) : (
         <div className="text-lg text-right text-red-600 font-bold">
-          Grand total is over budget!: ${total}
+          Grand total is over budget!: ${grandTotal}
         </div>
       )}
       <div>
-        {props.items.map((value, index) => (
+        {items.map((value, index) => (
           <div key={index}>
-            <Item
-              item={value}
-              onEdit={props.onEdit}
-              onDelete={props.onDelete}
-            />
+            <Item item={value} />
           </div>
         ))}
       </div>

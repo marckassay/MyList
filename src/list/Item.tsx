@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { GroceryItem, ItemMutate } from "../types";
+import { GroceryItem } from "../types";
 import { PencilIcon, TrashIcon } from "@heroicons/react/solid";
+import { useAppStore } from "../store/App.store";
 
-export interface ItemProps extends ItemMutate {
+export interface ItemProps {
   item: GroceryItem;
 }
 
-export function Item({ item, onEdit, onDelete }: ItemProps) {
+export function Item({ item }: ItemProps) {
+  const { edit, confirmToTrash } = useAppStore();
+
   const [isHovering, setIsHovering] = useState(false);
 
   return (
@@ -22,11 +25,11 @@ export function Item({ item, onEdit, onDelete }: ItemProps) {
       </div>
       {isHovering ? (
         <div className="flex flex-row cursor-pointer self-center">
-          <div onClick={() => onEdit(item)}>
+          <div onClick={() => edit(item)}>
             <PencilIcon className="icon-standard hover:text-blue-500" />
           </div>
           <div className="flex-initial w-2"></div>
-          <div onClick={() => onDelete(item)}>
+          <div onClick={() => confirmToTrash(item)}>
             <TrashIcon className="icon-standard hover:text-red-900" />
           </div>
         </div>

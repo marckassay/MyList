@@ -19,6 +19,7 @@ module.exports = {
     "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
     "^.+\\.module\\.(css|sass|scss)$",
   ],
+  resolver: `<rootDir>/src/jest-resolver.js`,
   modulePaths: ["<rootDir>/src"],
   moduleNameMapper: {
     "^react-native$": "react-native-web",

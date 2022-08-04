@@ -1,30 +1,24 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationCircleIcon, XIcon } from "@heroicons/react/solid";
 import { Fragment } from "react";
+import { useAppStore } from "./store/App.store";
 import { Children } from "./types";
 
-export interface ConfirmationModalProps<T> {
-  /**
-   * The item that we are seeking a confirmation from user.
-   */
-  item?: T;
+export function ConfirmationModal({ children }: Children) {
+  const {
+    confirm: { item },
+    trash,
+  } = useAppStore();
 
-  /**
-   * When `value` is an Entity value, user has confirmed delete operation. Otherwise
-   * when `value` is `undefined`, user cancelled or aborted delete opertion.
-   */
-  onConfirmDelete: (value: T | undefined) => void;
-}
-
-export function ConfirmationModal<T>({
-  item,
-  onConfirmDelete,
-  children,
-}: ConfirmationModalProps<T> & Children) {
+  // creates 'key: value' array to be listed in confirmation
+  // message to provide more info to the user than perhaps just
+  // a name.
   const parsedIterableItem = () => {
     const result = [];
-    for (const field in item) {
-      if (field !== "id") result.push(`${field}: ${item[field]}`);
+    if (item) {
+      for (const [field, value] of Object.entries(item)) {
+        if (field !== "id") result.push(`${field}: ${value}`);
+      }
     }
     return result;
   };
@@ -32,13 +26,12 @@ export function ConfirmationModal<T>({
   return (
     <>
       {children}
-
       {item && (
         <Transition appear show={item !== undefined} as={Fragment}>
           <Dialog
             as="div"
             className="relative z-10"
-            onClose={() => onConfirmDelete(undefined)}
+            onClose={() => trash(false)}
           >
             <Transition.Child
               as={Fragment}
@@ -93,7 +86,7 @@ export function ConfirmationModal<T>({
                       <button
                         type="button"
                         className="button-standard"
-                        onClick={() => onConfirmDelete(undefined)}
+                        onClick={() => trash(false)}
                       >
                         <span className="inline-flex">
                           <XIcon className="icon-standard" />
@@ -103,7 +96,7 @@ export function ConfirmationModal<T>({
                       <button
                         type="button"
                         className="button-danger"
-                        onClick={() => onConfirmDelete(item)}
+                        onClick={() => trash(true)}
                       >
                         <span className="inline-flex">
                           <ExclamationCircleIcon className="icon-standard" />

@@ -1,13 +1,14 @@
-import { ModifyItem, ModifyItemProps } from "./ModifyItem";
+import { useAppStore } from "../store/App.store";
+import { ModifyItem } from "./ModifyItem";
 
-export interface ToolbarProps {
-  modifyItemProps: ModifyItemProps;
-}
+export function Toolbar() {
+  const {
+    toolbar: { item },
+  } = useAppStore();
 
-export function Toolbar({ modifyItemProps }: ToolbarProps) {
   return (
     <div className="flex mx-auto gap-x-2">
-      <ModifyItem {...modifyItemProps} />
+      <ModifyItem item={item} />
     </div>
   );
 }

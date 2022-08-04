@@ -2,56 +2,47 @@ import { useEffect, useState } from "react";
 import { GroceryItem } from "../types";
 import { emptyGroceryItem, isGroceryItemValid } from "../utils";
 import { PencilIcon, CheckCircleIcon, XIcon } from "@heroicons/react/solid";
+import { useAppStore } from "../store/App.store";
 
 export interface ModifyItemProps {
-  updateItems: (item: GroceryItem) => void;
-  editItem?: GroceryItem;
+  item?: GroceryItem;
 }
 
-export function ModifyItem({ updateItems, editItem }: ModifyItemProps) {
-  const [isEditing, setEditing] = useState<boolean>(false);
-  const [item, setItem] = useState<GroceryItem>(emptyGroceryItem);
-  const [isValid, setValidate] = useState<boolean>(false);
+export function ModifyItem({ item }: ModifyItemProps) {
+  const { cancel, submit } = useAppStore();
+  const [draft, setDraftItem] = useState<GroceryItem>(emptyGroceryItem);
+  const [isValid, setIsValid] = useState<boolean>();
+  const [isNewItem, setIsNewItem] = useState<boolean>();
 
   const onNameChangeResult = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setItem({ ...item, name: e.target.value });
+    setDraftItem({ ...draft, name: e.target.value });
   };
 
   const onPriceChangeResult = (e: React.ChangeEvent<HTMLInputElement>) => {
     const result1 = e.target.value;
     const result = parseInt(result1 === "" ? "0" : result1);
     if (!isNaN(result) && typeof result === "number") {
-      setItem({ ...item, price: result });
+      setDraftItem({ ...draft, price: result });
     }
   };
 
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-    if (isGroceryItemValid(item)) {
-      updateItems(item);
-      onReset();
+    if (isGroceryItemValid(draft)) {
+      submit(draft);
+      setDraftItem(emptyGroceryItem);
     }
-
     e.preventDefault();
   };
 
-  const onReset = () => {
-    setItem(emptyGroceryItem);
-    setEditing(false);
-  };
-
   useEffect(() => {
-    setValidate(isGroceryItemValid(item));
+    setIsValid(isGroceryItemValid(item));
+    setIsNewItem(item === undefined);
+    setDraftItem(item ?? emptyGroceryItem);
   }, [item]);
 
   useEffect(() => {
-    if (editItem) {
-      setItem(editItem);
-      setEditing(true);
-    } else {
-      setItem(emptyGroceryItem);
-      setEditing(false);
-    }
-  }, [editItem]);
+    setIsValid(isGroceryItemValid(draft));
+  }, [draft]);
 
   return (
     <div className="m-5 md:mt-0 md:col-span-2">
@@ -71,7 +62,7 @@ export function ModifyItem({ updateItems, editItem }: ModifyItemProps) {
                   name="item-name"
                   id="item-name"
                   placeholder="Enter name of item"
-                  value={item.name}
+                  value={draft.name}
                   onChange={onNameChangeResult}
                   className="p-2 mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full h-8 shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
@@ -92,7 +83,7 @@ export function ModifyItem({ updateItems, editItem }: ModifyItemProps) {
                     type="text"
                     name="price"
                     id="price"
-                    value={item.price}
+                    value={draft.price}
                     onChange={onPriceChangeResult}
                     className="pointer-events-auto p-2 focus:ring-blue-500 focus:border-blue-500 block w-full h-8 pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
                     placeholder="0"
@@ -116,8 +107,8 @@ export function ModifyItem({ updateItems, editItem }: ModifyItemProps) {
             </div>
           </div>
           <div className="px-4 py-3 bg-blue-300 text-right select-none sm:px-6">
-            {isEditing && (
-              <button onClick={onReset} className="mr-2 button-standard">
+            {!isNewItem && (
+              <button onClick={cancel} className="mr-2 button-standard">
                 <span className="inline-flex">
                   <XIcon className="icon-standard" />
                   Cancel
@@ -129,7 +120,7 @@ export function ModifyItem({ updateItems, editItem }: ModifyItemProps) {
               disabled={!isValid}
               className="button-standard"
             >
-              {!isEditing ? (
+              {isNewItem ? (
                 <span className="inline-flex gap-px">
                   <PencilIcon className="icon-standard" />
                   Add Item
