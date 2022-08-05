@@ -14,7 +14,7 @@ export const appStoreActions = (): IncludeOnlyActions<AppState> => ({
     useAppStore.setState((state) => {
       const items = state.list.items;
 
-      if (item.id !== 0) {
+      if (item.id) {
         items.forEach((i) => {
           // since the name and/or price could of changed, map
           // those values into `i` of matching id.

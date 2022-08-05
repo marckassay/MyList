@@ -35,6 +35,7 @@ module.exports = {
       };`;
     }
 
-    return `module.exports = ${assetFilename};`;
+    // changed according to this doc: @see https://jestjs.io/docs/upgrading-to-jest28#transformer
+    return { code: `module.exports = ${assetFilename};` };
   },
 };

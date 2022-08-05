@@ -4,6 +4,8 @@
     "composite": true,
     "noEmit": false,
     "outDir": "./dist/out-tsc",
+    "module": "CommonJS",
+    "esModuleInterop": false,
     "types": ["jest"]
   },
   "exclude": [],
