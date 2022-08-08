@@ -1,15 +1,13 @@
-import { nanoid } from "nanoid";
+import { customAlphabet } from "nanoid";
 import { GroceryItem } from "./types";
 
-export const initialItems: GroceryItem[] = [
-  { id: nanoid(), name: "Apples", price: 6 },
-  { id: nanoid(), name: "Bread", price: 3 },
-  { id: nanoid(), name: "Watermelon", price: 7 },
-];
+export const newId = () => Number(customAlphabet("0123456789", 7)());
 
-export const grandTotal: number = initialItems
-  .map((item) => item.price)
-  .reduce((previousprice, price) => previousprice + price, 0);
+export const initialItems: GroceryItem[] = [
+  { id: newId(), name: "Apples", price: 6 },
+  { id: newId(), name: "Bread", price: 3 },
+  { id: newId(), name: "Watermelon", price: 7 },
+];
 
 export const calculateGrandTotal = (items: GroceryItem[]) =>
   items

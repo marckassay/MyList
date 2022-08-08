@@ -1,87 +1,83 @@
-import { useAppStore } from "./App.store";
-import { AppState, GroceryItem, IncludeOnlyActions } from "../types";
-import { nanoid } from "nanoid";
+import { GroceryItem } from "../types";
+import { Action, AppState } from "../types";
+import { calculateGrandTotal, newId } from "../utils";
 
-import { calculateGrandTotal } from "../utils";
+const removeItem = (array: GroceryItem[], id: number) =>
+  array.filter((i) => i.id !== id);
 
-export const appStoreActions = (): IncludeOnlyActions<AppState> => ({
-  cancel: () => {
-    useAppStore.setState((state) => ({
-      toolbar: { ...state.toolbar, item: undefined },
-    }));
-  },
-  submit: (item: GroceryItem) => {
-    useAppStore.setState((state) => {
-      const items = state.list.items;
-
-      if (item.id) {
-        items.forEach((i) => {
-          // since the name and/or price could of changed, map
-          // those values into `i` of matching id.
-          if (i.id === item.id) {
-            i.name = item.name;
-            i.price = item.price;
-          }
-        });
-      } else {
-        item.id = nanoid();
-        items.push(item);
-      }
-
+export const reducer = (
+  state: AppState,
+  { type, payload }: Action
+): AppState => {
+  switch (type) {
+    case "toolbar/reset form":
       return {
-        list: {
-          ...state.list,
-          grandTotal: calculateGrandTotal(items),
-          items,
-        },
+        ...state,
+        toolbar: { ...state.toolbar, item: undefined },
       };
-    });
-    useAppStore.setState((state) => ({
-      toolbar: { ...state.toolbar, item: undefined },
-    }));
-  },
-  edit: (item: GroceryItem) => {
-    useAppStore.setState((state) => ({
-      toolbar: { ...state.toolbar, item },
-    }));
-  },
-  trash: (value: boolean) => {
-    if (value) {
-      const item = useAppStore.getState().confirm.item;
-      if (item) {
-        useAppStore.setState((state) => {
-          const items = state.list.items.filter((i) => i.id !== item.id);
+    case "toolbar/submit form":
+      if (payload) {
+        if (!payload.id) {
+          payload.id = newId();
+          const grandTotal =
+            calculateGrandTotal(state.list.items) + payload.price;
 
           return {
+            ...state,
+            toolbar: { ...state.toolbar, item: undefined },
             list: {
               ...state.list,
-              grandTotal: calculateGrandTotal(items),
-              items,
+              grandTotal,
+              items: [{ ...payload }, ...state.list.items],
+            },
+            confirm: { ...state.confirm },
+          };
+        } else {
+          const items = removeItem(state.list.items, payload.id);
+
+          return {
+            ...state,
+            toolbar: { ...state.toolbar, item: undefined },
+            list: {
+              ...state.list,
+              grandTotal: calculateGrandTotal(state.list.items),
+              items: [{ ...payload }, ...items],
             },
           };
-        });
+        }
       } else {
-        throw Error(
-          "Unexpected state: `trash` action did not retrieve item from state"
-        );
+        throw new Error(`Action: '${type}' requries a payload.`);
       }
-
-      // TODO: although this works. there may be a reactive
-      // way to do this. that is, to 'dispatch' to 'subscribers'
-      // that an item has been removed from collection
-      const toolbar = useAppStore.getState().toolbar;
-      if (item.id === toolbar.item?.id) {
-        useAppStore.setState((state) => ({
+    case "list/init edit item":
+      return {
+        ...state,
+        toolbar: { ...state.toolbar, item: payload },
+      };
+    case "list/confirm trash item":
+      return {
+        ...state,
+        confirm: { ...state.confirm, item: payload },
+      };
+    case "confirm/abort trash":
+      return {
+        ...state,
+        confirm: { ...state.confirm, item: undefined },
+      };
+    case "confirm/proceed to trash":
+      if (payload && payload.id) {
+        return {
+          ...state,
           toolbar: { ...state.toolbar, item: undefined },
-        }));
+          confirm: { ...state.confirm, item: undefined },
+          list: {
+            items: removeItem(state.list.items, payload.id),
+            grandTotal: calculateGrandTotal(state.list.items),
+          },
+        };
+      } else {
+        throw new Error(`Action: '${type}' requries a payload.`);
       }
-    }
-
-    useAppStore.setState((state) => ({
-      confirm: { ...state.confirm, item: undefined },
-    }));
-  },
-  confirmToTrash: (item: GroceryItem) => {
-    useAppStore.setState((state) => ({ confirm: { ...state.confirm, item } }));
-  },
-});
+    default:
+      return state;
+  }
+};

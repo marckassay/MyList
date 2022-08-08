@@ -18,8 +18,8 @@ export function List() {
         </div>
       )}
       <div>
-        {items.map((value, index) => (
-          <div key={index}>
+        {items.map((value) => (
+          <div key={value.id?.toString()}>
             <Item item={value} />
           </div>
         ))}

@@ -1,27 +1,31 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationCircleIcon, XIcon } from "@heroicons/react/solid";
-import { Fragment } from "react";
+import { Fragment, useRef } from "react";
 import { useAppStore } from "./store/App.store";
-import { Children } from "./types";
+import { Children, Entity } from "./types";
+
+/**
+ * creates 'key: value' array to be listed in confirmation
+ * message to provide more info to the user than perhaps just
+ * a name.
+ */
+const parsedIterableItem = (item: Entity) => {
+  const result = [];
+  if (item) {
+    for (const [field, value] of Object.entries(item)) {
+      if (field !== "id") result.push(`${field}: ${value}`);
+    }
+  }
+  return result;
+};
 
 export function ConfirmationModal({ children }: Children) {
   const {
     confirm: { item },
-    trash,
+    dispatch,
   } = useAppStore();
 
-  // creates 'key: value' array to be listed in confirmation
-  // message to provide more info to the user than perhaps just
-  // a name.
-  const parsedIterableItem = () => {
-    const result = [];
-    if (item) {
-      for (const [field, value] of Object.entries(item)) {
-        if (field !== "id") result.push(`${field}: ${value}`);
-      }
-    }
-    return result;
-  };
+  const cancelButtonRef = useRef(null);
 
   return (
     <>
@@ -31,7 +35,8 @@ export function ConfirmationModal({ children }: Children) {
           <Dialog
             as="div"
             className="relative z-10"
-            onClose={() => trash(false)}
+            initialFocus={cancelButtonRef}
+            onClose={() => dispatch({ type: "confirm/abort trash" })}
           >
             <Transition.Child
               as={Fragment}
@@ -70,7 +75,7 @@ export function ConfirmationModal({ children }: Children) {
                         button:
                       </p>
                       <div className="mt-2"></div>
-                      {parsedIterableItem().map((value, index) => (
+                      {parsedIterableItem(item).map((value, index) => (
                         <div key={index} className="indent-2 font-mono">
                           {value}
                         </div>
@@ -86,7 +91,10 @@ export function ConfirmationModal({ children }: Children) {
                       <button
                         type="button"
                         className="button-standard"
-                        onClick={() => trash(false)}
+                        ref={cancelButtonRef}
+                        onClick={() =>
+                          dispatch({ type: "confirm/abort trash" })
+                        }
                       >
                         <span className="inline-flex">
                           <XIcon className="icon-standard" />
@@ -96,7 +104,12 @@ export function ConfirmationModal({ children }: Children) {
                       <button
                         type="button"
                         className="button-danger"
-                        onClick={() => trash(true)}
+                        onClick={() =>
+                          dispatch({
+                            type: "confirm/proceed to trash",
+                            payload: item,
+                          })
+                        }
                       >
                         <span className="inline-flex">
                           <ExclamationCircleIcon className="icon-standard" />

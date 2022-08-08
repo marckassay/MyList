@@ -9,7 +9,7 @@ export interface ModifyItemProps {
 }
 
 export function ModifyItem({ item }: ModifyItemProps) {
-  const { cancel, submit } = useAppStore();
+  const { dispatch } = useAppStore();
   const [draft, setDraftItem] = useState<GroceryItem>(emptyGroceryItem);
   const [isValid, setIsValid] = useState<boolean>();
   const [isNewItem, setIsNewItem] = useState<boolean>();
@@ -28,7 +28,7 @@ export function ModifyItem({ item }: ModifyItemProps) {
 
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     if (isGroceryItemValid(draft)) {
-      submit(draft);
+      dispatch({ type: "toolbar/submit form", payload: draft });
       setDraftItem(emptyGroceryItem);
     }
     e.preventDefault();
@@ -108,7 +108,10 @@ export function ModifyItem({ item }: ModifyItemProps) {
           </div>
           <div className="px-4 py-3 bg-blue-300 text-right select-none sm:px-6">
             {!isNewItem && (
-              <button onClick={cancel} className="mr-2 button-standard">
+              <button
+                onClick={() => dispatch({ type: "toolbar/reset form" })}
+                className="mr-2 button-standard"
+              >
                 <span className="inline-flex">
                   <XIcon className="icon-standard" />
                   Cancel

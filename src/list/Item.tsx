@@ -8,7 +8,7 @@ export interface ItemProps {
 }
 
 export function Item({ item }: ItemProps) {
-  const { edit, confirmToTrash } = useAppStore();
+  const { dispatch } = useAppStore();
 
   const [isHovering, setIsHovering] = useState(false);
 
@@ -25,11 +25,21 @@ export function Item({ item }: ItemProps) {
       </div>
       {isHovering ? (
         <div className="flex flex-row cursor-pointer self-center">
-          <div data-testid="edit" onClick={() => edit(item)}>
+          <div
+            data-testid="edit"
+            onClick={() =>
+              dispatch({ type: "list/init edit item", payload: item })
+            }
+          >
             <PencilIcon className="icon-standard hover:text-blue-500" />
           </div>
           <div className="flex-initial w-2"></div>
-          <div data-testid="trash" onClick={() => confirmToTrash(item)}>
+          <div
+            data-testid="trash"
+            onClick={() =>
+              dispatch({ type: "list/confirm trash item", payload: item })
+            }
+          >
             <TrashIcon className="icon-standard hover:text-red-900" />
           </div>
         </div>
