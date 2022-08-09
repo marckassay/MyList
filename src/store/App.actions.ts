@@ -2,8 +2,11 @@ import { GroceryItem } from "../types";
 import { Action, AppState } from "../types";
 import { calculateGrandTotal, newId } from "../utils";
 
-const removeItem = (array: GroceryItem[], id: number) =>
-  array.filter((i) => i.id !== id);
+const removeItem = (value: GroceryItem[] | undefined, id: number) =>
+  Array.isArray(value) ? value.filter((i) => i.id !== id) : [];
+
+const copyArray = (value: GroceryItem[] | undefined) =>
+  Array.isArray(value) ? value.splice(0) : [];
 
 export const reducer = (
   state: AppState,
@@ -28,7 +31,7 @@ export const reducer = (
             list: {
               ...state.list,
               grandTotal,
-              items: [{ ...payload }, ...state.list.items],
+              items: [{ ...payload }, ...copyArray(state.list.items)],
             },
           };
         } else {

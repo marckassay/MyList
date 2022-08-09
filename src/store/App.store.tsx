@@ -5,16 +5,23 @@ import { calculateGrandTotal, initialItems } from "../utils";
 import { reducer } from "./App.actions";
 
 const initialState: AppState = {
-  title: "Grocery List",
+  title: "",
   toolbar: {
     item: undefined,
   },
   list: {
-    grandTotal: calculateGrandTotal(initialItems),
-    items: [...initialItems],
+    grandTotal: undefined,
+    items: undefined,
   },
   confirm: {
     item: undefined,
   },
 };
 export const useAppStore = create(devtools(redux(reducer, initialState)));
+useAppStore.setState({
+  title: "Grocery List",
+  list: {
+    grandTotal: calculateGrandTotal(initialItems),
+    items: [...initialItems],
+  },
+});

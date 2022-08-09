@@ -9,10 +9,12 @@ export const initialItems: GroceryItem[] = [
   { id: newId(), name: "Watermelon", price: 7 },
 ];
 
-export const calculateGrandTotal = (items: GroceryItem[]) =>
-  items
-    .map((item) => item.price)
-    .reduce((previousprice, price) => previousprice + price, 0);
+export const calculateGrandTotal = (items: GroceryItem[] | undefined) =>
+  items instanceof Array
+    ? items
+        .map((item) => item.price)
+        .reduce((previousprice, price) => previousprice + price, 0)
+    : 0;
 
 export const emptyGroceryItem: GroceryItem = { id: 0, name: "", price: 0 };
 

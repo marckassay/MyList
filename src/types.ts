@@ -16,7 +16,7 @@ export interface ToolbarSlice {
 }
 
 export interface ListSlice {
-  list: { grandTotal: number; items: Array<GroceryItem> };
+  list: { grandTotal?: number; items?: Array<GroceryItem> };
 }
 
 export interface ConfirmationModalSlice {
