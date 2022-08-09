@@ -30,17 +30,17 @@ export const reducer = (
               grandTotal,
               items: [{ ...payload }, ...state.list.items],
             },
-            confirm: { ...state.confirm },
           };
         } else {
           const items = removeItem(state.list.items, payload.id);
+          const grandTotal = calculateGrandTotal(items) + payload.price;
 
           return {
             ...state,
             toolbar: { ...state.toolbar, item: undefined },
             list: {
               ...state.list,
-              grandTotal: calculateGrandTotal(state.list.items),
+              grandTotal,
               items: [{ ...payload }, ...items],
             },
           };
@@ -65,19 +65,20 @@ export const reducer = (
       };
     case "confirm/proceed to trash":
       if (payload && payload.id) {
+        const items = removeItem(state.list.items, payload.id);
+        const grandTotal = calculateGrandTotal(items);
+
         return {
           ...state,
           toolbar: { ...state.toolbar, item: undefined },
           confirm: { ...state.confirm, item: undefined },
           list: {
-            items: removeItem(state.list.items, payload.id),
-            grandTotal: calculateGrandTotal(state.list.items),
+            items,
+            grandTotal,
           },
         };
       } else {
         throw new Error(`Action: '${type}' requries a payload.`);
       }
-    default:
-      return state;
   }
 };
