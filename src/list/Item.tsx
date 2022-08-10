@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { GroceryItem } from "../types";
 import { PencilIcon, TrashIcon } from "@heroicons/react/solid";
+import { GroceryItem } from "../types";
 import { useAppStore } from "../store/App.store";
 
 export interface ItemProps {

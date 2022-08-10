@@ -1,6 +1,6 @@
-import { renderHook } from "@testing-library/react";
-import { calculateGrandTotal } from "../../src/utils";
+import { act, renderHook } from "@testing-library/react";
 import { useAppStore } from "./App.store";
+import { calculateGrandTotal } from "../../src/utils";
 
 describe("State behavior", () => {
   const items = [
@@ -25,59 +25,66 @@ describe("State behavior", () => {
     });
   });
 
-  it("should set toolbar.item from 'list/init edit item' action", async () => {
+  it("should set toolbar.item from 'list/init edit item' action", () => {
     const { result } = renderHook(() => useAppStore());
 
     const item = items[0];
 
     expect(result.current.toolbar.item).toBeUndefined();
-
-    await result.current.dispatch({
-      type: "list/init edit item",
-      payload: item,
+    act(() => {
+      result.current.dispatch({
+        type: "list/init edit item",
+        payload: item,
+      });
     });
 
     expect(result.current.toolbar.item).toBe(item);
   });
 
-  it("should set confirm.item from 'list/confirm trash item' action", async () => {
+  it("should set confirm.item from 'list/confirm trash item' action", () => {
     const { result } = renderHook(() => useAppStore());
 
     const item = items[0];
 
     expect(result.current.confirm.item).toBeUndefined();
 
-    await result.current.dispatch({
-      type: "list/confirm trash item",
-      payload: item,
+    act(() => {
+      result.current.dispatch({
+        type: "list/confirm trash item",
+        payload: item,
+      });
     });
 
     expect(result.current.confirm.item).toBe(item);
   });
 
-  it("should not remove item from 'confirm/abort trash' action", async () => {
+  it("should not remove item from 'confirm/abort trash' action", () => {
     const { result } = renderHook(() => useAppStore());
 
     expect(result.current.list.items).toHaveLength(3);
     const item = items[0];
 
-    await result.current.dispatch({
-      type: "confirm/abort trash",
-      payload: item,
+    act(() => {
+      result.current.dispatch({
+        type: "confirm/abort trash",
+        payload: item,
+      });
     });
 
     expect(result.current.list.items).toContain(item);
   });
 
-  it("should remove item from 'confirm/proceed to trash' action", async () => {
+  it("should remove item from 'confirm/proceed to trash' action", () => {
     const { result } = renderHook(() => useAppStore());
 
     expect(result.current.list.items).toHaveLength(3);
     const item = items[0];
 
-    await result.current.dispatch({
-      type: "confirm/proceed to trash",
-      payload: item,
+    act(() => {
+      result.current.dispatch({
+        type: "confirm/proceed to trash",
+        payload: item,
+      });
     });
 
     expect(result.current.list.items).not.toContain(item);

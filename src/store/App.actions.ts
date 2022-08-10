@@ -1,5 +1,4 @@
-import { GroceryItem } from "../types";
-import { Action, AppState } from "../types";
+import { Action, AppState, GroceryItem } from "../types";
 import { calculateGrandTotal, newId } from "../utils";
 
 const removeItem = (value: GroceryItem[] | undefined, id: number) =>

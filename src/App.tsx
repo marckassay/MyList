@@ -1,8 +1,7 @@
-import { Toolbar } from "./toolbar/Toolbar";
 import { List } from "./list/List";
-import { ConfirmationModal } from "./ConfirmationModal";
-
 import { useAppStore } from "./store/App.store";
+import { Toolbar } from "./toolbar/Toolbar";
+import { ConfirmationModal } from "./ConfirmationModal";
 
 export default function App() {
   const { title } = useAppStore();

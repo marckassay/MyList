@@ -1,14 +1,6 @@
 import "@testing-library/jest-dom";
-import {
-  act,
-  fireEvent,
-  render,
-  renderHook,
-  screen,
-} from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import App from "./App";
-import { useAppStore } from "./store/App.store";
-import { calculateGrandTotal, initialItems } from "./utils";
 
 describe("launched with defaults", () => {
   it("should show title and items", () => {

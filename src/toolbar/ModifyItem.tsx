@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { CheckCircleIcon, PencilIcon, XIcon } from "@heroicons/react/solid";
 import { GroceryItem } from "../types";
 import { emptyGroceryItem, isGroceryItemValid } from "../utils";
-import { PencilIcon, CheckCircleIcon, XIcon } from "@heroicons/react/solid";
 import { useAppStore } from "../store/App.store";
 
 export interface ModifyItemProps {
