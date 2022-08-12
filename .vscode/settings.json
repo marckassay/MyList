@@ -1,8 +1,11 @@
 {
   "files.eol": "\n",
-  "editor.formatOnSave": true,
   "npm.packageManager": "npm",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.autoSave": "onFocusChange",
+  "editor.formatOnSave": true,
+  "eslint.alwaysShowStatus": true,
+  "prettier.enable": true,
+  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
   "css.customData": ["./css-data.json"],
   "testing.autoRun.delay": 5000,
   "emmet.includeLanguages": {

@@ -1,5 +1,5 @@
-import { Item } from "./Item";
 import { useAppStore } from "../store/App.store";
+import { Item } from "./Item";
 
 export function List() {
   const {

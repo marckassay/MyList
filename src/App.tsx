@@ -3,7 +3,7 @@ import { useAppStore } from "./store/App.store";
 import { Toolbar } from "./toolbar/Toolbar";
 import { ConfirmationModal } from "./ConfirmationModal";
 
-export default function App() {
+export function App() {
   const { title } = useAppStore();
 
   return (

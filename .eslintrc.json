@@ -1,37 +1,135 @@
 {
+  "root": true,
+  "extends": [
+    /*
+    "Because of this line, all of the rules marked “(recommended)” on the rules 
+    page will be turned on. Alternatively, you can use configurations that 
+    others have created by searching for 'eslint-config' on npmjs.com. ESLint 
+    will not lint your code unless you extend from a shared configuration or 
+    explicitly turn rules on in your configuration." 
+    - https://eslint.org/docs/latest/user-guide/getting-started#configuration
+    */
+    "eslint:recommended",
+    // @link: https://typescript-eslint.io/docs/
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:@typescript-eslint/strict",
+    // @link https://github.com/jsx-eslint/eslint-plugin-react
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    // @link https://github.com/import-js/eslint-plugin-import#typescript
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    // @link https://github.com/jest-community/eslint-plugin-jest#shareable-configurations
+    // "plugin:jest/recommended",
+    // "plugin:jest/style",
+    // "helpful config to help ensure ESLint doesn't report on formatting issues that prettier will fix"
+    // @link: https://typescript-eslint.io/docs/linting/configs#prettier
+    "prettier"
+  ],
   "settings": {
     "react": {
       "createClass": "createReactClass",
       "pragma": "React",
       "fragment": "Fragment",
       "version": "detect"
+    },
+    /*
+    "jest": {
+      "version": 28
+    },
+    */
+    "import/parsers": "@typescript-eslint/parser: [ .ts, .tsx ]",
+    "import/resolver": {
+      "typescript": true,
+      "node": true
     }
   },
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "node": true,
+    "jest": true
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:react/recommended",
-    "plugin:react/jsx-runtime",
-    "prettier"
-  ],
   "parser": "@typescript-eslint/parser",
+  /*
+  "Note when using a custom parser, the parserOptions configuration property is
+   still required for ESLint to work properly with features not in ECMAScript 5
+   by default. Parsers are all passed parserOptions and may or may not use 
+   them to determine which features to enable." 
+   - https://eslint.org/docs/latest/user-guide/configuring/plugins
+   */
+  // @link: https://eslint.org/docs/latest/user-guide/configuring/language-options#specifying-parser-options
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
     },
     "ecmaVersion": "latest",
-    "sourceType": "module"
+    "sourceType": "module",
+    "tsconfigRootDir": ".",
+    "project": ["./tsconfig.eslint.json"]
   },
-  "plugins": ["react", "react-hooks", "@typescript-eslint"],
-  "ignorePatterns": ["/dist/", "**/vendor/*.js", "*.js", "*.css"],
+  // seems that 'plugin:' entries in `extends` populate `plugins` below:
+  // @link: https://typescript-eslint.io/docs/
+  // @link: https://reactjs.org/docs/hooks-rules.html#eslint-plugin
+  "plugins": ["react-hooks"],
+  "ignorePatterns": [
+    "/node_modules/",
+    "/dist/",
+    "/tmp/",
+    "/temp/",
+    "/tests",
+    "**/vendor/*.js",
+    "*.css",
+    "*.js"
+  ],
   "rules": {
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "react/jsx-uses-react": "error",
-    "react/jsx-uses-vars": "error"
+    "react/jsx-uses-vars": "error",
+    // @link https://github.com/import-js/eslint-plugin-import#typescript
+    "import/named": "off",
+    "import/namespace": "off",
+    "import/newline-after-import": ["off"],
+    "import/default": "off",
+    "import/no-named-as-default": "off",
+    "import/no-named-as-default-member": "off",
+    "import/no-unresolved": "off",
+    // @link https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/order.md
+    // @link https://github.com/import-js/eslint-plugin-import/issues/2471#issuecomment-1180549209
+    "import/order": [
+      "error",
+      {
+        "pathGroups": [
+          {
+            "pattern": "*(react**)/**",
+            "group": "external",
+            "position": "before",
+            "patternOptions": { "partial": true }
+          },
+          {
+            "pattern": "*(zustand**)/**",
+            "group": "external",
+            "position": "before",
+            "patternOptions": { "partial": true }
+          },
+          {
+            "pattern": "*(@heroicons|@headlessui)/**",
+            "group": "external",
+            "position": "before",
+            "patternOptions": { "partial": true }
+          },
+          {
+            "pattern": "*(@MyList)/**",
+            "group": "index",
+            "position": "after",
+            "patternOptions": { "partial": true }
+          }
+        ],
+        "newlines-between": "never",
+        "pathGroupsExcludedImportTypes": ["builtin"]
+      }
+    ]
   }
 }

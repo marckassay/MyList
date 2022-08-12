@@ -16,8 +16,7 @@ export function Item({ item }: ItemProps) {
     <div
       onMouseOver={() => setIsHovering(true)}
       onMouseOut={() => setIsHovering(false)}
-      className="flex flex-row gap-2 w-full select-none"
-    >
+      className="flex flex-row gap-2 w-full select-none">
       <div className="text-lg text-left font-mono">{item.name}</div>
       <div className="grow"></div>
       <div className="text-lg text-right font-mono font-semibold">
@@ -29,8 +28,7 @@ export function Item({ item }: ItemProps) {
             data-testid="edit"
             onClick={() =>
               dispatch({ type: "list/init edit item", payload: item })
-            }
-          >
+            }>
             <PencilIcon className="icon-standard hover:text-blue-500" />
           </div>
           <div className="flex-initial w-2"></div>
@@ -38,8 +36,7 @@ export function Item({ item }: ItemProps) {
             data-testid="trash"
             onClick={() =>
               dispatch({ type: "list/confirm trash item", payload: item })
-            }
-          >
+            }>
             <TrashIcon className="icon-standard hover:text-red-900" />
           </div>
         </div>

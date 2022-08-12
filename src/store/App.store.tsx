@@ -1,8 +1,8 @@
-import create from "zustand";
 import { devtools, redux } from "zustand/middleware";
-import { reducer } from "./App.actions";
+import create from "zustand";
 import { AppState } from "../types";
 import { calculateGrandTotal, initialItems } from "../utils";
+import { reducer } from "./App.actions";
 
 const initialState: AppState = {
   title: "",

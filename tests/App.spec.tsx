@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
-import App from "./App";
+import { App } from "@MyList/App";
 
 describe("launched with defaults", () => {
   it("should show title and items", () => {
@@ -20,12 +20,12 @@ describe("interactions", () => {
 
     expect(screen.queryByRole("dialog")).toBeNull();
   });
-  it("should show 'edit' and 'trash' icons on item mouseover", async () => {
+  it("should show 'edit' and 'trash' icons on item mouseover", () => {
     render(<App />);
 
     fireEvent.mouseOver(screen.getByText("Apples"));
-    const editIcon = await screen.getByTestId("edit");
-    const trashIcon = await screen.getByTestId("trash");
+    const editIcon = screen.getByTestId("edit");
+    const trashIcon = screen.getByTestId("trash");
 
     expect(editIcon);
     expect(trashIcon);
@@ -34,7 +34,7 @@ describe("interactions", () => {
     render(<App />);
 
     fireEvent.mouseOver(screen.getByText("Apples"));
-    const icon = await screen.getByTestId("trash");
+    const icon = screen.getByTestId("trash");
     fireEvent.click(icon);
     const dialog = await screen.findByRole("dialog");
 

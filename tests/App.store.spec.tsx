@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
-import { useAppStore } from "./App.store";
-import { calculateGrandTotal } from "../../src/utils";
+import { useAppStore } from "@MyList/store/App.store";
+import { calculateGrandTotal } from "@MyList/utils";
 
 describe("State behavior", () => {
   const items = [

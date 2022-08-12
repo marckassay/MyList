@@ -66,7 +66,7 @@ export const reducer = (
         confirm: { ...state.confirm, item: undefined },
       };
     case "confirm/proceed to trash":
-      if (payload && payload.id) {
+      if (payload?.id) {
         const items = removeItem(state.list.items, payload.id);
         const grandTotal = calculateGrandTotal(items);
 

@@ -1,9 +1,10 @@
 {
   "recommendations": [
     "esbenp.prettier-vscode",
-    "Orta.vscode-jest",
+    "orta.vscode-jest",
     "dbaeumer.vscode-eslint",
     "editorconfig.editorconfig",
-    "csstools.postcss"
+    "csstools.postcss",
+    "rvest.vs-code-prettier-eslint"
   ]
 }

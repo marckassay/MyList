@@ -16,7 +16,7 @@ export interface ToolbarSlice {
 }
 
 export interface ListSlice {
-  list: { grandTotal?: number; items?: Array<GroceryItem> };
+  list: { grandTotal?: number; items?: GroceryItem[] };
 }
 
 export interface ConfirmationModalSlice {
@@ -31,7 +31,10 @@ type ActionType =
   | "confirm/abort trash"
   | "confirm/proceed to trash";
 
-export type Action = { type: ActionType; payload?: GroceryItem };
+export interface Action {
+  type: ActionType;
+  payload?: GroceryItem;
+}
 
 export type AppState = {
   title: string;

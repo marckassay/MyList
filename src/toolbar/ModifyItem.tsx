@@ -53,8 +53,7 @@ export function ModifyItem({ item }: ModifyItemProps) {
               <div className="col-span-4 sm:col-span-3 select-none">
                 <label
                   htmlFor="item-name"
-                  className="block text-sm font-medium text-gray-700 "
-                >
+                  className="block text-sm font-medium text-gray-700 ">
                   Item
                 </label>
                 <input
@@ -71,8 +70,7 @@ export function ModifyItem({ item }: ModifyItemProps) {
               <div className="col-span-3 sm:col-span-3">
                 <label
                   htmlFor="price"
-                  className="block text-sm font-medium text-gray-700 select-none"
-                >
+                  className="block text-sm font-medium text-gray-700 select-none">
                   Price
                 </label>
                 <div className="mt-1 relative rounded-md shadow-sm select-none">
@@ -95,8 +93,7 @@ export function ModifyItem({ item }: ModifyItemProps) {
                     <select
                       id="currency"
                       name="currency"
-                      className="focus:ring-blue-500 focus:border-blue-500 h-8 py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md"
-                    >
+                      className="focus:ring-blue-500 focus:border-blue-500 h-8 py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
                       <option>USD</option>
                       <option>CAD</option>
                       <option>EUR</option>
@@ -110,8 +107,7 @@ export function ModifyItem({ item }: ModifyItemProps) {
             {!isNewItem && (
               <button
                 onClick={() => dispatch({ type: "toolbar/reset form" })}
-                className="mr-2 button-standard"
-              >
+                className="mr-2 button-standard">
                 <span className="inline-flex">
                   <XIcon className="icon-standard" />
                   Cancel
@@ -121,8 +117,7 @@ export function ModifyItem({ item }: ModifyItemProps) {
             <button
               type="submit"
               disabled={!isValid}
-              className="button-standard"
-            >
+              className="button-standard">
               {isNewItem ? (
                 <span className="inline-flex gap-px">
                   <PencilIcon className="icon-standard" />

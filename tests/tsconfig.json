@@ -1,13 +1,12 @@
 {
-  "extends": "./tsconfig",
+  "extends": "../tsconfig",
   "compilerOptions": {
-    "composite": true,
     "noEmit": false,
     "outDir": "./dist/out-tsc",
     "module": "CommonJS",
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "types": ["jest"]
   },
-  "exclude": [],
-  "include": ["./src"]
+  "include": ["../src", "*"],
+  "exclude": []
 }
