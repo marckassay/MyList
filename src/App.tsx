@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { List } from "./list/List";
-import { useAppStore } from "./store/App.store";
 import { Toolbar } from "./toolbar/Toolbar";
 import { ConfirmationModal } from "./ConfirmationModal";
+import { useAppStore } from "@MyList/store/App.store";
 
 export function App() {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { title } = useAppStore();
 
   return (

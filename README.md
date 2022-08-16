@@ -60,3 +60,9 @@ https://github.com/jest-community/jest-runner-eslint
 https://github.com/jest-community/jest-extended
 
 CSS + HTML + MD
+
+
+
+
+// Vite and TypeScript
+https://vitejs.dev/guide/features.html#typescript

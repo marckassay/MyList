@@ -34,11 +34,6 @@
       "fragment": "Fragment",
       "version": "detect"
     },
-    /*
-    "jest": {
-      "version": 28
-    },
-    */
     "import/parsers": "@typescript-eslint/parser: [ .ts, .tsx ]",
     "import/resolver": {
       "typescript": true,
@@ -67,7 +62,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module",
     "tsconfigRootDir": ".",
-    "project": ["./tsconfig.eslint.json"]
+    "project": ["./src/tsconfig.editor.json"]
   },
   // seems that 'plugin:' entries in `extends` populate `plugins` below:
   // @link: https://typescript-eslint.io/docs/
@@ -81,7 +76,8 @@
     "/tests",
     "**/vendor/*.js",
     "*.css",
-    "*.js"
+    "*.js",
+    "*.spec.tsx"
   ],
   "rules": {
     "react-hooks/rules-of-hooks": "error",

@@ -3,11 +3,16 @@
   "npm.packageManager": "npm",
   "files.autoSave": "onFocusChange",
   "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.addMissingImports": true
+  },
   "eslint.alwaysShowStatus": true,
   "prettier.enable": true,
   "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
   "css.customData": ["./css-data.json"],
   "testing.autoRun.delay": 5000,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
   "emmet.includeLanguages": {
     "postcss": "css"
   }

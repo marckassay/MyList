@@ -22,6 +22,7 @@ module.exports = {
   modulePaths: ["<rootDir>/src"],
   moduleNameMapper: {
     "^react-native$": "react-native-web",
+    "^@MyList/(.*)$": ["<rootDir>/src/$1"],
     "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
   },
   moduleFileExtensions: [
@@ -42,6 +43,5 @@ module.exports = {
     "jest-watch-typeahead/filename",
     "jest-watch-typeahead/testname",
   ],
-  automock: false,
   resetMocks: true,
 };

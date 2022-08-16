@@ -8,6 +8,8 @@
     "build": "vite build",
     "dev": "vite",
     "test": "npx jest",
+    "test:clear": "npx jest --clearCache",
+    "test:print": "npx jest --showConfig",
     "lint": "npx eslint . --fix",
     "lint:check": "npx eslint . --fix-dry-run",
     "lint:print": "npx eslint --print-config .eslintrc.json > tmp/eslintrc.conf.json",
@@ -28,6 +30,7 @@
     "nanoid": "^3.3.4",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "tslib": "^2.4.0",
     "zustand": "^4.0.0"
   },
   "devDependencies": {
