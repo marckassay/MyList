@@ -43,7 +43,7 @@ The following are ESLint rules/plugins that are being used:
 - "eslint-plugin-jest"
 
 ## TODO
-
+https://github.com/swc-project/swc/issues/246
 Enable and add additional Jest linting:
 - https://github.com/jest-community/eslint-plugin-jest
 - https://github.com/jest-community/jest-runner-eslint

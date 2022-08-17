@@ -16,6 +16,7 @@
     "esModuleInterop": true,
     "useDefineForClassFields": true,
     "isolatedModules": true,
+    "noEmit": true,
     "allowSyntheticDefaultImports": true,
     "strict": true
   },
