@@ -2,11 +2,11 @@
   "root": true,
   "extends": [
     /*
-    "Because of this line, all of the rules marked “(recommended)” on the rules 
-    page will be turned on. Alternatively, you can use configurations that 
-    others have created by searching for 'eslint-config' on npmjs.com. ESLint 
-    will not lint your code unless you extend from a shared configuration or 
-    explicitly turn rules on in your configuration." 
+    "Because of this line, all of the rules marked “(recommended)” on the rules
+    page will be turned on. Alternatively, you can use configurations that
+    others have created by searching for 'eslint-config' on npmjs.com. ESLint
+    will not lint your code unless you extend from a shared configuration or
+    explicitly turn rules on in your configuration."
     - https://eslint.org/docs/latest/user-guide/getting-started#configuration
     */
     "eslint:recommended",
@@ -21,8 +21,8 @@
     "plugin:import/recommended",
     "plugin:import/typescript",
     // @link https://github.com/jest-community/eslint-plugin-jest#shareable-configurations
-    // "plugin:jest/recommended",
-    // "plugin:jest/style",
+    "plugin:jest/recommended",
+    "plugin:jest/style",
     // "helpful config to help ensure ESLint doesn't report on formatting issues that prettier will fix"
     // @link: https://typescript-eslint.io/docs/linting/configs#prettier
     "prettier"
@@ -38,6 +38,9 @@
     "import/resolver": {
       "typescript": true,
       "node": true
+    },
+    "jest": {
+      "version": 28
     }
   },
   "env": {
@@ -50,8 +53,8 @@
   /*
   "Note when using a custom parser, the parserOptions configuration property is
    still required for ESLint to work properly with features not in ECMAScript 5
-   by default. Parsers are all passed parserOptions and may or may not use 
-   them to determine which features to enable." 
+   by default. Parsers are all passed parserOptions and may or may not use
+   them to determine which features to enable."
    - https://eslint.org/docs/latest/user-guide/configuring/plugins
    */
   // @link: https://eslint.org/docs/latest/user-guide/configuring/language-options#specifying-parser-options
@@ -62,23 +65,13 @@
     "ecmaVersion": "latest",
     "sourceType": "module",
     "tsconfigRootDir": ".",
-    "project": ["./src/tsconfig.editor.json"]
+    "project": ["./src/tsconfig.editor.json", "./src/tsconfig.spec.json"]
   },
   // seems that 'plugin:' entries in `extends` populate `plugins` below:
   // @link: https://typescript-eslint.io/docs/
   // @link: https://reactjs.org/docs/hooks-rules.html#eslint-plugin
   "plugins": ["react-hooks"],
-  "ignorePatterns": [
-    "/node_modules/",
-    "/dist/",
-    "/tmp/",
-    "/temp/",
-    "/tests",
-    "**/vendor/*.js",
-    "*.css",
-    "*.js",
-    "*.spec.tsx"
-  ],
+  "ignorePatterns": ["/node_modules/", "/dist/", "/tmp/", "/temp/", "*.js"],
   "rules": {
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
@@ -126,6 +119,27 @@
         "newlines-between": "never",
         "pathGroupsExcludedImportTypes": ["builtin"]
       }
-    ]
-  }
+    ],
+    "jest/consistent-test-it": "error",
+    "jest/prefer-expect-assertions": "off"
+  },
+  // @link https://github.com/testing-library/eslint-plugin-testing-library#run-the-plugin-only-against-test-files
+  "overrides": [
+    {
+      "files": [
+        "**/__tests__/**/*.[jt]s?(x)",
+        "**/?(*.)+(spec|test).[jt]s?(x)"
+      ],
+      "rules": {
+        // @link https://github.com/testing-library/eslint-plugin-testing-library/blob/main/docs/rules/consistent-data-testid.md
+        "testing-library/consistent-data-testid": [
+          2,
+          {
+            "testIdPattern": "^TestId(__[A-Z]*)?$"
+          }
+        ]
+      },
+      "extends": ["plugin:testing-library/react"]
+    }
+  ]
 }

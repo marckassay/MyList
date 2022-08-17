@@ -6,11 +6,9 @@ describe("launched with defaults", () => {
   it("should show title and items", () => {
     render(<App />);
 
-    expect(screen.getByText(/Grocery List/));
-
-    expect(screen.getByText(/Apples/));
-    expect(screen.getByText(/Bread/));
-    expect(screen.getByText(/Watermelon/));
+    expect(screen.getByText(/Apples/)).toBeInTheDocument();
+    expect(screen.getByText(/Bread/)).toBeInTheDocument();
+    expect(screen.getByText(/Watermelon/)).toBeInTheDocument();
   });
 });
 
@@ -27,8 +25,8 @@ describe("interactions", () => {
     const editIcon = screen.getByTestId("edit");
     const trashIcon = screen.getByTestId("trash");
 
-    expect(editIcon);
-    expect(trashIcon);
+    expect(editIcon).toBeInTheDocument();
+    expect(trashIcon).toBeInTheDocument();
   });
   it("should show dialog on 'trash' icon click", async () => {
     render(<App />);

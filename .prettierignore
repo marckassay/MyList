@@ -1,10 +1,11 @@
 # @link https://prettier.io/docs/en/ignore.html#ignoring-files-prettierignore
 
-/package-lock.json/
-*.md
-*.html
-*.css
+**/.git
+**/.svn
+**/.hg
+**/node_modules
+
+**/package-lock.json
 /dist
-/node_modules
 /tmp
 /temp

@@ -29,22 +29,27 @@ This project is using [@swc/jest](https://swc.rs/docs/usage/jest), to run 'jest'
 
 Linting is performed by [eslint](https://eslint.org/) configured for [typescript-eslint](https://github.com/Microsoft/vscode-eslint) to lint TypeScript files.
 
-
 Formatting is performed by [Prettier](https://prettier.io/) with VSCode extension [prettier-vscode](https://github.com/prettier/prettier-vscode) along with a few other extensions mentioned below.
 
 'typescript-eslint' [documentation](https://typescript-eslint.io/docs/linting/configs/#prettier) considers 'eslint-config-prettier' to be helpful as the sole formatter. And Prettier does [too](https://prettier.io/docs/en/integrating-with-linters.html). But Prettier does not recommend 'eslint-plugin-prettier' and instead [suggests 'prettier-eslint'](https://github.com/prettier/prettier-eslint/issues/699#issuecomment-1166373283). 'prettier-eslint' has a companion project, [prettier-eslint-cli](https://github.com/prettier/prettier-eslint-cli) so that it can run on multiple files. 'prettier-eslint-cli' is used in the VSCode formatter extension [vs-code-prettier-eslint](https://github.com/idahogurl/vs-code-prettier-eslint). As mention in 'vs-code-prettier-eslint' documentation, VSCode Prettier and ESLint extensions are not required but
 can be used, which they are in this project that you're reading.
 
 The following are ESLint rules/plugins that are being used:
+
 - [eslint-plugin-import](https://github.com/import-js/eslint-plugin-import): sorts import statements
 - [eslint-import-resolver-typescript](https://github.com/import-js/eslint-import-resolver-typescript): sorts import statements
-- "eslint-plugin-react"
-- "eslint-plugin-react-hooks"
-- "eslint-plugin-jest"
+- [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react)
+- [eslint-plugin-react-hooks](https://reactjs.org/docs/hooks-rules.html#eslint-plugin)
+- [eslint-plugin-jest](https://github.com/jest-community/eslint-plugin-jest)
+- [eslint-plugin-testing-library](https://github.com/testing-library/eslint-plugin-testing-library)
+
+## Watch Issues
+
+- @swc/jest [#246](https://github.com/swc-project/swc/issues/246)
+- nanoid [#365](https://github.com/ai/nanoid/issues/365#)
 
 ## TODO
-https://github.com/swc-project/swc/issues/246
-Enable and add additional Jest linting:
-- https://github.com/jest-community/eslint-plugin-jest
-- https://github.com/jest-community/jest-runner-eslint
-- https://github.com/jest-community/jest-extended
+
+- Add [jest-extended](https://github.com/jest-community/jest-extended)
+
+- Configure 'eslintrc.json' like so: [separate parsers](https://stackoverflow.com/a/59842806/648789)

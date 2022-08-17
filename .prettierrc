@@ -1,4 +1,5 @@
 {
+  "$schema": "http://json.schemastore.org/prettierrc",
   "arrowParens": "always",
   "bracketSpacing": true,
   "endOfLine": "lf",
@@ -17,13 +18,7 @@
   "useTabs": false,
   "overrides": [
     {
-      "files": [
-        "package.json",
-        "tsconfig.*.json",
-        ".swcrc",
-        ".prettierrc",
-        ".eslintrc.json"
-      ],
+      "files": [".swcrc", ".prettierrc", "**/*.json"],
       "options": { "parser": "json" }
     },
     {
@@ -37,6 +32,12 @@
       "options": {
         "parser": "typescript",
         "bracketSameLine": true
+      }
+    },
+    {
+      "files": ["*.md"],
+      "options": {
+        "parser": "markdown"
       }
     }
   ]
