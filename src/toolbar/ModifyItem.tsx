@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { CheckCircleIcon, PencilIcon, XIcon } from "@heroicons/react/solid";
 import { GroceryItem } from "../types";
 import { emptyGroceryItem, isGroceryItemValid } from "../utils";
-import { useAppStore } from "../store/App.store";
+import { action, useAppStore } from "../store/App.store";
 
 export interface ModifyItemProps {
   item?: GroceryItem;
@@ -28,7 +28,7 @@ export function ModifyItem({ item }: ModifyItemProps) {
 
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     if (isGroceryItemValid(draft)) {
-      dispatch({ type: "toolbar/submit form", payload: draft });
+      dispatch(action("toolbar/submit form", draft));
       setDraftItem(emptyGroceryItem);
     }
     e.preventDefault();
