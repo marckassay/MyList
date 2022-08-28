@@ -50,6 +50,8 @@ The following are ESLint rules/plugins that are being used:
 
 ## TODO
 
+- Develop TS typings: objective is to create a map of 'domain/event' strings with corrsponding object types all from a type or interface. See `AppActions` in source code for more comments.
+
 - Add [jest-extended](https://github.com/jest-community/jest-extended)
 
 - Configure 'eslintrc.json' like so: [separate parsers](https://stackoverflow.com/a/59842806/648789)
