@@ -42,50 +42,73 @@ export type AppState = {
   ListSlice &
   ConfirmationModalSlice;
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type AppActions = {
+  toolbar: {
+    "submit form": GroceryItem;
+    "reset form": undefined;
+  };
+  list: { "init edit item": GroceryItem; "confirm trash item": GroceryItem };
+  confirm: { "abort trash": undefined; "proceed to trash": GroceryItem };
+};
+
 /**
- * Open issues that may be related to this objective:
- * @link https://github.com/microsoft/TypeScript/issues/13948
- * This link has relavent typings to what I'm attempting to achieve:
- * @link https://catchts.com/hex-validation#function_inference
  * @todo remove `payload` from call signature when value is set to `undefined` in `AppActions`:
  * @link https://www.typescriptlang.org/play?ts=4.4.2&exactOptionalPropertyTypes=true&q=224#example/exact-optional-properties
  */
-type DomainType<Type extends ActionsType> = string & keyof Type;
+type ActionsType = Record<string, DomainActionsType>;
 
-type EventType<
-  Type extends ActionsType,
-  Domain extends DomainType<Type>
-> = string & keyof Type[Domain];
+type DomainActionsType = Record<string, unknown>;
 
-type DomainEvent<
-  Type extends ActionsType,
-  Domain extends DomainType<Type>,
-  Event extends EventType<Type, Domain>
-> = string & `${Domain}/${Event}`;
+type Separator = "/";
 
-type PayloadType<
-  Type extends ActionsType,
-  Domain extends DomainType<Type>,
-  Event extends EventType<Type, Domain>
-> = Type[Domain][Event];
-
-export type ReduxParams<Type extends ActionsType> = <
-  Domain extends DomainType<Type>,
-  Event extends EventType<Type, Domain>,
-  Payload extends PayloadType<Type, Domain, Event>
->(
-  type: DomainEvent<Type, Domain, Event>,
-  payload: Payload
-) => { type: DomainEvent<Type, Domain, Event>; payload: Payload };
-
-export type ReduxReturn<Type extends ActionsType> = ReduxParams<Type> extends (
-  ...args: infer _
-) => infer R
-  ? R
+// https://stackoverflow.com/questions/50374908/transform-union-type-to-intersection-type/50375286#50375286
+type UnionToIntersection<U> = (
+  U extends unknown ? (k: U) => void : never
+) extends (k: infer I) => void
+  ? I
   : never;
 
-type ActionsType = Record<string, Record<string, unknown>>;
+type DomainEventIndexedObj<
+  Type extends ActionsType,
+  DomainKey extends keyof Type = ""
+> = DomainKey extends keyof Type
+  ? {
+      readonly [EventKey in keyof Type[DomainKey] as `${string &
+        DomainKey}${Separator}${string & EventKey}`]: Type[DomainKey][EventKey];
+    }
+  : DomainEventIndexedObj<Type, keyof Type>;
+
+export type DomainEventIntersect<Type extends ActionsType> =
+  UnionToIntersection<DomainEventIndexedObj<Type>>;
+
+export type PickPayloadType<
+  Type extends ActionsType,
+  K extends Key<Type>
+> = Pick<DomainEventIntersect<Type>, K>;
+
+/**
+ * @todo The references in code for `ReduxReturn` return a union of all members for each property.
+ * @link https://catchts.com/callbacks#infer_argument_and_return_value
+ * @link https://stackoverflow.com/questions/66706012/infer-function-generic-type-u-from-return-value-of-passed-function
+ */
+
+export type Key<Type extends ActionsType> = keyof DomainEventIntersect<Type>;
+
+export type ReduxParams<Type extends ActionsType> = <
+  K extends Key<Type>,
+  P extends Pick<DomainEventIntersect<Type>, K>
+>(
+  type: K,
+  payload: P[K]
+) => {
+  type: K;
+  payload: P[K];
+};
 
 export function createActions<Type extends ActionsType>(): ReduxParams<Type> {
-  return (type, payload) => ({ type, payload });
+  return (type, payload) => ({
+    type,
+    payload,
+  });
 }

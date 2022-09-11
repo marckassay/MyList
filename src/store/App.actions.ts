@@ -7,6 +7,26 @@ const removeItem = (value: GroceryItem[] | undefined, id: number) =>
 const copyArray = (value: GroceryItem[] | undefined) =>
   Array.isArray(value) ? value.splice(0) : [];
 
+// TODO: implement
+/*
+export const reducer2 = ({
+  type,
+  payload,
+}: {
+  type: Key<AppActions>;
+  payload: PickPayloadType<AppActions, typeof type>;
+}) => {
+  switch (type) {
+    case "toolbar/edit form":
+      payload[type].id;
+      return {};
+
+    default:
+      return {};
+  }
+};
+*/
+
 export const reducer = (
   state: AppState,
   { type, payload }: Action

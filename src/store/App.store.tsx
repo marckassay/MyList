@@ -1,6 +1,6 @@
 import { devtools, redux } from "zustand/middleware";
 import create from "zustand";
-import { AppState, createActions, GroceryItem, ReduxParams } from "../types";
+import { AppActions, AppState, createActions } from "../types";
 import { calculateGrandTotal, initialItems } from "../utils";
 import { reducer } from "./App.actions";
 
@@ -27,14 +27,4 @@ useAppStore.setState({
   },
 });
 
-/*
-  Below is work in progress. Only implemented very modestly by using it only
-  one instance. More TS typing knowledge is needed.
- */
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type AppActions = {
-  toolbar: { "submit form": GroceryItem; "edit form": undefined };
-  list: { "init edit item": undefined; "confirm trash item": undefined };
-  confirm: { "abort trash": undefined; "proceed to trash": undefined };
-};
-export const action: ReduxParams<AppActions> = createActions<AppActions>();
+export const action = createActions<AppActions>();
