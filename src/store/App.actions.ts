@@ -1,4 +1,11 @@
-import { Action, AppState, GroceryItem } from "../types";
+/* eslint-disable no-case-declarations */
+import {
+  ActionRedux,
+  AppActions,
+  AppState,
+  GetPayLoadType,
+  GroceryItem,
+} from "../types";
 import { calculateGrandTotal, newId } from "../utils";
 
 const removeItem = (value: GroceryItem[] | undefined, id: number) =>
@@ -7,30 +14,12 @@ const removeItem = (value: GroceryItem[] | undefined, id: number) =>
 const copyArray = (value: GroceryItem[] | undefined) =>
   Array.isArray(value) ? value.splice(0) : [];
 
-// TODO: implement
-/*
-export const reducer2 = ({
-  type,
-  payload,
-}: {
-  type: Key<AppActions>;
-  payload: PickPayloadType<AppActions, typeof type>;
-}) => {
-  switch (type) {
-    case "toolbar/edit form":
-      payload[type].id;
-      return {};
-
-    default:
-      return {};
-  }
-};
-*/
-
 export const reducer = (
   state: AppState,
-  { type, payload }: Action
+  { type, payload }: ReturnType<ActionRedux<AppActions>>
 ): AppState => {
+  let pay: GetPayLoadType<typeof type>;
+
   switch (type) {
     case "toolbar/reset form":
       return {
@@ -38,47 +27,48 @@ export const reducer = (
         toolbar: { ...state.toolbar, item: undefined },
       };
     case "toolbar/submit form":
-      if (payload) {
-        if (!payload.id) {
-          payload.id = newId();
-          const grandTotal =
-            calculateGrandTotal(state.list.items) + payload.price;
+      pay = payload as GetPayLoadType<typeof type>;
 
-          return {
-            ...state,
-            toolbar: { ...state.toolbar, item: undefined },
-            list: {
-              ...state.list,
-              grandTotal,
-              items: [{ ...payload }, ...copyArray(state.list.items)],
-            },
-          };
-        } else {
-          const items = removeItem(state.list.items, payload.id);
-          const grandTotal = calculateGrandTotal(items) + payload.price;
+      if (!pay.id) {
+        pay.id = newId();
+        const grandTotal = calculateGrandTotal(state.list.items) + pay.price;
 
-          return {
-            ...state,
-            toolbar: { ...state.toolbar, item: undefined },
-            list: {
-              ...state.list,
-              grandTotal,
-              items: [{ ...payload }, ...items],
-            },
-          };
-        }
+        return {
+          ...state,
+          toolbar: { ...state.toolbar, item: undefined },
+          list: {
+            ...state.list,
+            grandTotal,
+            items: [{ ...pay }, ...copyArray(state.list.items)],
+          },
+        };
       } else {
-        throw new Error(`Action: '${type}' requries a payload.`);
+        const items = removeItem(state.list.items, pay.id);
+        const grandTotal = calculateGrandTotal(items) + pay.price;
+
+        return {
+          ...state,
+          toolbar: { ...state.toolbar, item: undefined },
+          list: {
+            ...state.list,
+            grandTotal,
+            items: [{ ...pay }, ...items],
+          },
+        };
       }
     case "list/init edit item":
+      pay = payload as GetPayLoadType<typeof type>;
+
       return {
         ...state,
-        toolbar: { ...state.toolbar, item: payload },
+        toolbar: { ...state.toolbar, item: pay },
       };
     case "list/confirm trash item":
+      pay = payload as GetPayLoadType<typeof type>;
+
       return {
         ...state,
-        confirm: { ...state.confirm, item: payload },
+        confirm: { ...state.confirm, item: pay },
       };
     case "confirm/abort trash":
       return {
@@ -86,8 +76,10 @@ export const reducer = (
         confirm: { ...state.confirm, item: undefined },
       };
     case "confirm/proceed to trash":
-      if (payload?.id) {
-        const items = removeItem(state.list.items, payload.id);
+      pay = payload as GetPayLoadType<typeof type>;
+
+      if (typeof pay.id === "number") {
+        const items = removeItem(state.list.items, pay.id);
         const grandTotal = calculateGrandTotal(items);
 
         return {
@@ -100,7 +92,9 @@ export const reducer = (
           },
         };
       } else {
-        throw new Error(`Action: '${type}' requries a payload.`);
+        throw new Error(
+          `Reducer for '${type}' action recieved a payload that wasn't a number.`
+        );
       }
   }
 };

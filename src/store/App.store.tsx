@@ -27,4 +27,4 @@ useAppStore.setState({
   },
 });
 
-export const action = createActions<AppActions>();
+export const { action } = createActions<AppActions>();

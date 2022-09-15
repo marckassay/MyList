@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { PencilIcon, TrashIcon } from "@heroicons/react/solid";
 import { GroceryItem } from "../types";
-import { useAppStore } from "../store/App.store";
+import { action, useAppStore } from "../store/App.store";
 
 export interface ItemProps {
   item: GroceryItem;
@@ -26,17 +26,13 @@ export function Item({ item }: ItemProps) {
         <div className="flex flex-row cursor-pointer self-center">
           <div
             data-testid="edit"
-            onClick={() =>
-              dispatch({ type: "list/init edit item", payload: item })
-            }>
+            onClick={() => dispatch(action("list/init edit item", item))}>
             <PencilIcon className="icon-standard hover:text-blue-500" />
           </div>
           <div className="flex-initial w-2"></div>
           <div
             data-testid="trash"
-            onClick={() =>
-              dispatch({ type: "list/confirm trash item", payload: item })
-            }>
+            onClick={() => dispatch(action("list/confirm trash item", item))}>
             <TrashIcon className="icon-standard hover:text-red-900" />
           </div>
         </div>

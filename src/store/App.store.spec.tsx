@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react";
-import { useAppStore } from "@MyList/store/App.store";
+import { action, useAppStore } from "@MyList/store/App.store";
 import { calculateGrandTotal } from "@MyList/utils";
 
 describe("State behavior", () => {
@@ -32,10 +32,7 @@ describe("State behavior", () => {
 
     expect(result.current.toolbar.item).toBeUndefined();
     act(() => {
-      result.current.dispatch({
-        type: "list/init edit item",
-        payload: item,
-      });
+      result.current.dispatch(action("list/init edit item", item));
     });
 
     expect(result.current.toolbar.item).toBe(item);
@@ -49,29 +46,10 @@ describe("State behavior", () => {
     expect(result.current.confirm.item).toBeUndefined();
 
     act(() => {
-      result.current.dispatch({
-        type: "list/confirm trash item",
-        payload: item,
-      });
+      result.current.dispatch(action("list/confirm trash item", item));
     });
 
     expect(result.current.confirm.item).toBe(item);
-  });
-
-  it("should not remove item from 'confirm/abort trash' action", () => {
-    const { result } = renderHook(() => useAppStore());
-
-    expect(result.current.list.items).toHaveLength(3);
-    const item = items[0];
-
-    act(() => {
-      result.current.dispatch({
-        type: "confirm/abort trash",
-        payload: item,
-      });
-    });
-
-    expect(result.current.list.items).toContain(item);
   });
 
   it("should remove item from 'confirm/proceed to trash' action", () => {
@@ -81,10 +59,7 @@ describe("State behavior", () => {
     const item = items[0];
 
     act(() => {
-      result.current.dispatch({
-        type: "confirm/proceed to trash",
-        payload: item,
-      });
+      result.current.dispatch(action("confirm/proceed to trash", item));
     });
 
     expect(result.current.list.items).not.toContain(item);

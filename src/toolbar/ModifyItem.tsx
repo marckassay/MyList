@@ -106,7 +106,7 @@ export function ModifyItem({ item }: ModifyItemProps) {
           <div className="px-4 py-3 bg-blue-300 text-right select-none sm:px-6">
             {!isNewItem && (
               <button
-                onClick={() => dispatch({ type: "toolbar/reset form" })}
+                onClick={() => dispatch(action("toolbar/reset form"))}
                 className="mr-2 button-standard">
                 <span className="inline-flex">
                   <XIcon className="icon-standard" />

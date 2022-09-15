@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-invalid-void-type */
 export interface Entity {
   id?: number;
 }
@@ -23,19 +24,6 @@ export interface ConfirmationModalSlice {
   confirm: { item?: GroceryItem };
 }
 
-type ActionType =
-  | "toolbar/reset form"
-  | "toolbar/submit form"
-  | "list/init edit item"
-  | "list/confirm trash item"
-  | "confirm/abort trash"
-  | "confirm/proceed to trash";
-
-export interface Action {
-  type: ActionType;
-  payload?: GroceryItem;
-}
-
 export type AppState = {
   title: string;
 } & ToolbarSlice &
@@ -56,13 +44,16 @@ export type AppActions = {
  * @todo remove `payload` from call signature when value is set to `undefined` in `AppActions`:
  * @link https://www.typescriptlang.org/play?ts=4.4.2&exactOptionalPropertyTypes=true&q=224#example/exact-optional-properties
  */
-type ActionsType = Record<string, DomainActionsType>;
+export type ActionsType = Record<string, DomainActionsType>;
 
 type DomainActionsType = Record<string, unknown>;
 
 type Separator = "/";
 
-// https://stackoverflow.com/questions/50374908/transform-union-type-to-intersection-type/50375286#50375286
+/**
+ * Credit to 'jcalz':
+ * @link https://stackoverflow.com/a/50375286
+ */
 type UnionToIntersection<U> = (
   U extends unknown ? (k: U) => void : never
 ) extends (k: infer I) => void
@@ -82,33 +73,58 @@ type DomainEventIndexedObj<
 export type DomainEventIntersect<Type extends ActionsType> =
   UnionToIntersection<DomainEventIndexedObj<Type>>;
 
-export type PickPayloadType<
-  Type extends ActionsType,
-  K extends Key<Type>
-> = Pick<DomainEventIntersect<Type>, K>;
-
-/**
- * @todo The references in code for `ReduxReturn` return a union of all members for each property.
- * @link https://catchts.com/callbacks#infer_argument_and_return_value
- * @link https://stackoverflow.com/questions/66706012/infer-function-generic-type-u-from-return-value-of-passed-function
- */
+export type GetPayLoadType<T> = T extends `${infer U extends Key<AppActions>}`
+  ? U extends `${infer A extends keyof AppActions}${Separator}${infer B extends string}`
+    ? B extends keyof AppActions[A]
+      ? AppActions[A][B]
+      : never
+    : never
+  : never;
 
 export type Key<Type extends ActionsType> = keyof DomainEventIntersect<Type>;
 
-export type ReduxParams<Type extends ActionsType> = <
+/**
+ * Credit to 'jcalz':
+ * @link https://stackoverflow.com/a/72449495/648789
+ */
+type OptionalIfUndefined<T> = undefined extends T
+  ? [payload?: T]
+  : [payload: T];
+
+export type ActionRedux<Type extends ActionsType> = <
   K extends Key<Type>,
   P extends Pick<DomainEventIntersect<Type>, K>
 >(
+  this: void,
   type: K,
-  payload: P[K]
+  ...[payload]: OptionalIfUndefined<P[K]>
 ) => {
   type: K;
   payload: P[K];
 };
 
-export function createActions<Type extends ActionsType>(): ReduxParams<Type> {
-  return (type, payload) => ({
-    type,
-    payload,
-  });
+export interface ReduxParams<Type extends ActionsType> {
+  action: ActionRedux<Type>;
 }
+
+export const createActions = <
+  Type extends ActionsType
+>(): ReduxParams<Type> => {
+  const action = function <
+    K extends Key<Type>,
+    P extends Pick<DomainEventIntersect<Type>, K>
+  >(
+    this: void,
+    type: K,
+    ...[payload]: OptionalIfUndefined<P[K]>
+  ): {
+    type: K;
+    payload: P[K];
+  } {
+    // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
+    const _payload = payload as P[K];
+    return { type, payload: _payload };
+  };
+
+  return { action };
+};
