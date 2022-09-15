@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
 /* eslint-disable no-case-declarations */
 import {
   ActionRedux,
