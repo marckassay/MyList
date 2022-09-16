@@ -44,7 +44,7 @@ export type AppActions = {
  * @todo remove `payload` from call signature when value is set to `undefined` in `AppActions`:
  * @link https://www.typescriptlang.org/play?ts=4.4.2&exactOptionalPropertyTypes=true&q=224#example/exact-optional-properties
  */
-export type ActionsType = Record<string, DomainActionsType>;
+type ActionsType = Record<string, DomainActionsType>;
 
 type DomainActionsType = Record<string, unknown>;
 
@@ -70,18 +70,21 @@ type DomainEventIndexedObj<
     }
   : DomainEventIndexedObj<Type, keyof Type>;
 
-export type DomainEventIntersect<Type extends ActionsType> =
-  UnionToIntersection<DomainEventIndexedObj<Type>>;
+type DomainEventIntersect<Type extends ActionsType> = UnionToIntersection<
+  DomainEventIndexedObj<Type>
+>;
 
-export type GetPayLoadType<T> = T extends `${infer U extends Key<AppActions>}`
-  ? U extends `${infer A extends keyof AppActions}${Separator}${infer B extends string}`
-    ? B extends keyof AppActions[A]
-      ? AppActions[A][B]
-      : never
-    : never
+export type GetPayLoadType<
+  Type extends ActionsType,
+  DE,
+  DEKey = DE extends DomainEventKey<Type> ? DE : never
+> = DEKey extends `${infer D extends string &
+  keyof Type}${Separator}${infer E extends keyof Type[D]}`
+  ? Type[D][E]
   : never;
 
-export type Key<Type extends ActionsType> = keyof DomainEventIntersect<Type>;
+type DomainEventKey<Type extends ActionsType> =
+  keyof DomainEventIntersect<Type>;
 
 /**
  * Credit to 'jcalz':
@@ -92,18 +95,18 @@ type OptionalIfUndefined<T> = undefined extends T
   : [payload: T];
 
 export type ActionRedux<Type extends ActionsType> = <
-  K extends Key<Type>,
-  P extends Pick<DomainEventIntersect<Type>, K>
+  DE extends DomainEventKey<Type>,
+  P extends Pick<DomainEventIntersect<Type>, DE>
 >(
   this: void,
-  type: K,
-  ...[payload]: OptionalIfUndefined<P[K]>
+  type: DE,
+  ...[payload]: OptionalIfUndefined<P[DE]>
 ) => {
-  type: K;
-  payload: P[K];
+  type: DE;
+  payload: P[DE];
 };
 
-export interface ReduxParams<Type extends ActionsType> {
+interface ReduxParams<Type extends ActionsType> {
   action: ActionRedux<Type>;
 }
 
@@ -111,18 +114,18 @@ export const createActions = <
   Type extends ActionsType
 >(): ReduxParams<Type> => {
   const action = function <
-    K extends Key<Type>,
-    P extends Pick<DomainEventIntersect<Type>, K>
+    DE extends DomainEventKey<Type>,
+    P extends Pick<DomainEventIntersect<Type>, DE>
   >(
     this: void,
-    type: K,
-    ...[payload]: OptionalIfUndefined<P[K]>
+    type: DE,
+    ...[payload]: OptionalIfUndefined<P[DE]>
   ): {
-    type: K;
-    payload: P[K];
+    type: DE;
+    payload: P[DE];
   } {
     // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-    const _payload = payload as P[K];
+    const _payload = payload as P[DE];
     return { type, payload: _payload };
   };
 

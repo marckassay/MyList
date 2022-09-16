@@ -19,7 +19,7 @@ export const reducer = (
   state: AppState,
   { type, payload }: ReturnType<ActionRedux<AppActions>>
 ): AppState => {
-  let pay: GetPayLoadType<typeof type>;
+  let pay: GetPayLoadType<AppActions, typeof type>;
 
   switch (type) {
     case "toolbar/reset form":
@@ -28,7 +28,7 @@ export const reducer = (
         toolbar: { ...state.toolbar, item: undefined },
       };
     case "toolbar/submit form":
-      pay = payload as GetPayLoadType<typeof type>;
+      pay = payload as GetPayLoadType<AppActions, typeof type>;
 
       if (!pay.id) {
         pay.id = newId();
@@ -58,14 +58,14 @@ export const reducer = (
         };
       }
     case "list/init edit item":
-      pay = payload as GetPayLoadType<typeof type>;
+      pay = payload as GetPayLoadType<AppActions, typeof type>;
 
       return {
         ...state,
         toolbar: { ...state.toolbar, item: pay },
       };
     case "list/confirm trash item":
-      pay = payload as GetPayLoadType<typeof type>;
+      pay = payload as GetPayLoadType<AppActions, typeof type>;
 
       return {
         ...state,
@@ -77,7 +77,7 @@ export const reducer = (
         confirm: { ...state.confirm, item: undefined },
       };
     case "confirm/proceed to trash":
-      pay = payload as GetPayLoadType<typeof type>;
+      pay = payload as GetPayLoadType<AppActions, typeof type>;
 
       if (typeof pay.id === "number") {
         const items = removeItem(state.list.items, pay.id);
