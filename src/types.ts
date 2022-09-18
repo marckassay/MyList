@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-invalid-void-type */
 export interface Entity {
   id?: number;
 }
@@ -40,10 +39,6 @@ export type AppActions = {
   confirm: { "abort trash": undefined; "proceed to trash": GroceryItem };
 };
 
-/**
- * @todo remove `payload` from call signature when value is set to `undefined` in `AppActions`:
- * @link https://www.typescriptlang.org/play?ts=4.4.2&exactOptionalPropertyTypes=true&q=224#example/exact-optional-properties
- */
 type ActionsType = Record<string, DomainActionsType>;
 
 type DomainActionsType = Record<string, unknown>;
@@ -65,7 +60,7 @@ type DomainEventIndexedObj<
   DomainKey extends keyof Type = ""
 > = DomainKey extends keyof Type
   ? {
-      readonly [EventKey in keyof Type[DomainKey] as `${string &
+      [EventKey in keyof Type[DomainKey] as `${string &
         DomainKey}${Separator}${string & EventKey}`]: Type[DomainKey][EventKey];
     }
   : DomainEventIndexedObj<Type, keyof Type>;
@@ -74,60 +69,101 @@ type DomainEventIntersect<Type extends ActionsType> = UnionToIntersection<
   DomainEventIndexedObj<Type>
 >;
 
+type DomainEventFlatten<Type extends ActionsType> = {
+  [DomainEventKey in keyof DomainEventIntersect<Type> as DomainEventKey]: DomainEventKey extends `${infer D extends string &
+    keyof Type}${Separator}${infer E extends keyof Type[D]}`
+    ? Type[D][E]
+    : never;
+};
+
 export type GetPayLoadType<
   Type extends ActionsType,
-  DE,
-  DEKey = DE extends DomainEventKey<Type> ? DE : never
-> = DEKey extends `${infer D extends string &
-  keyof Type}${Separator}${infer E extends keyof Type[D]}`
-  ? Type[D][E]
-  : never;
-
-type DomainEventKey<Type extends ActionsType> =
-  keyof DomainEventIntersect<Type>;
+  DE extends keyof DomainEventFlatten<Type>,
+  P extends DomainEventFlatten<Type> = DomainEventFlatten<Type>
+> = P[DE];
 
 /**
- * Credit to 'jcalz':
+ * Slightly modified from original. Credit to 'jcalz':
  * @link https://stackoverflow.com/a/72449495/648789
  */
 type OptionalIfUndefined<T> = undefined extends T
   ? [payload?: T]
   : [payload: T];
 
-export type ActionRedux<Type extends ActionsType> = <
-  DE extends DomainEventKey<Type>,
-  P extends Pick<DomainEventIntersect<Type>, DE>
->(
-  this: void,
-  type: DE,
-  ...[payload]: OptionalIfUndefined<P[DE]>
-) => {
+export interface ReturnActionRedux<
+  Type extends ActionsType,
+  P extends DomainEventFlatten<Type> = DomainEventFlatten<Type>,
+  DE extends keyof P = keyof P
+> {
   type: DE;
   payload: P[DE];
-};
+}
 
-interface ReduxParams<Type extends ActionsType> {
+export type ActionRedux<Type extends ActionsType> = <
+  P extends DomainEventFlatten<Type>,
+  DE extends keyof P
+>(
+  type: DE,
+  ...[payload]: OptionalIfUndefined<P[DE]>
+) => ReturnActionRedux<Type>;
+
+export interface ReduxParams<Type extends ActionsType> {
   action: ActionRedux<Type>;
 }
 
-export const createActions = <
-  Type extends ActionsType
->(): ReduxParams<Type> => {
+export const createActions = <Type extends ActionsType>() => {
   const action = function <
-    DE extends DomainEventKey<Type>,
-    P extends Pick<DomainEventIntersect<Type>, DE>
-  >(
-    this: void,
-    type: DE,
-    ...[payload]: OptionalIfUndefined<P[DE]>
-  ): {
-    type: DE;
-    payload: P[DE];
-  } {
-    // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-    const _payload = payload as P[DE];
-    return { type, payload: _payload };
+    P extends DomainEventFlatten<Type>,
+    DE extends keyof P
+  >(type: DE, ...[payload]: OptionalIfUndefined<P[DE]>) {
+    return {
+      type,
+      // TODO: works good for payloads with truthy values. but for
+      // `undefined` values, it has a `never` type.
+      payload, //: payload as NonNullable<typeof payload>,
+    } as const;
   };
 
   return { action };
 };
+
+//////////////////////////////////////////////////////////////////////////
+/*
+const { action } = createActions<AppActions>();
+const c1 = action("toolbar/submit form", { name: "", price: 0 });
+  c1;
+// ^?
+
+const reducer = ({ type, payload }: ReturnActionRedux<AppActions>) => {
+  let pay: GetPayLoadType<AppActions, typeof type>;
+
+  if(type === "toolbar/reset form") {
+    payload;
+    // ^?
+  } else if(type === "toolbar/submit form") {
+    payload;
+    // ^?
+  }
+
+  switch (type) {
+    case "toolbar/reset form":
+      pay = payload as GetPayLoadType<AppActions, typeof type>;
+      pay;
+      //^?
+      break;
+    case "toolbar/submit form":
+      pay = payload as GetPayLoadType<AppActions, typeof type>;
+      pay.name;
+      // ^?
+      break;
+  }
+};
+
+type t1 = DomainEventIndexedObj<AppActions>;
+
+type t2 = DomainEventIntersect<AppActions>;
+//   ^?
+
+type t3 = DomainEventFlatten<AppActions>;
+//   ^?
+*/

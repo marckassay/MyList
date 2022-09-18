@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
-/* eslint-disable no-case-declarations */
 import {
-  ActionRedux,
   AppActions,
   AppState,
   GetPayLoadType,
   GroceryItem,
+  ReturnActionRedux,
 } from "../types";
 import { calculateGrandTotal, newId } from "../utils";
 
@@ -17,9 +16,9 @@ const copyArray = (value: GroceryItem[] | undefined) =>
 
 export const reducer = (
   state: AppState,
-  { type, payload }: ReturnType<ActionRedux<AppActions>>
+  { type, payload }: ReturnActionRedux<AppActions>
 ): AppState => {
-  let pay: GetPayLoadType<AppActions, typeof type>;
+  let pay: typeof payload;
 
   switch (type) {
     case "toolbar/reset form":
@@ -58,14 +57,14 @@ export const reducer = (
         };
       }
     case "list/init edit item":
-      pay = payload as GetPayLoadType<AppActions, typeof type>;
+      pay = payload!;
 
       return {
         ...state,
         toolbar: { ...state.toolbar, item: pay },
       };
     case "list/confirm trash item":
-      pay = payload as GetPayLoadType<AppActions, typeof type>;
+      pay = payload!;
 
       return {
         ...state,
@@ -77,7 +76,7 @@ export const reducer = (
         confirm: { ...state.confirm, item: undefined },
       };
     case "confirm/proceed to trash":
-      pay = payload as GetPayLoadType<AppActions, typeof type>;
+      pay = payload!;
 
       if (typeof pay.id === "number") {
         const items = removeItem(state.list.items, pay.id);
