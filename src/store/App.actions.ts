@@ -1,11 +1,5 @@
 /* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
-import {
-  ActionRedux,
-  AppActions,
-  AppState,
-  GetPayLoadType,
-  GroceryItem,
-} from "../types";
+import { AppActions, AppState, GroceryItem, ActionReturnType } from "../types";
 import { calculateGrandTotal, newId } from "../utils";
 
 const removeItem = (value: GroceryItem[] | undefined, id: number) =>
@@ -16,10 +10,8 @@ const copyArray = (value: GroceryItem[] | undefined) =>
 
 export const reducer = (
   state: AppState,
-  { type, payload }: ReturnType<ActionRedux<AppActions>>
+  { type, payload }: ActionReturnType<AppActions>
 ): AppState => {
-  let pay: typeof payload;
-
   switch (type) {
     case "toolbar/reset form":
       return {
@@ -27,11 +19,10 @@ export const reducer = (
         toolbar: { ...state.toolbar, item: undefined },
       };
     case "toolbar/submit form":
-      pay = payload as GetPayLoadType<AppActions, typeof type>;
-
-      if (!pay.id) {
-        pay.id = newId();
-        const grandTotal = calculateGrandTotal(state.list.items) + pay.price;
+      if (!payload.id) {
+        payload.id = newId();
+        const grandTotal =
+          calculateGrandTotal(state.list.items) + payload.price;
 
         return {
           ...state,
@@ -39,12 +30,12 @@ export const reducer = (
           list: {
             ...state.list,
             grandTotal,
-            items: [{ ...pay }, ...copyArray(state.list.items)],
+            items: [{ ...payload }, ...copyArray(state.list.items)],
           },
         };
       } else {
-        const items = removeItem(state.list.items, pay.id);
-        const grandTotal = calculateGrandTotal(items) + pay.price;
+        const items = removeItem(state.list.items, payload.id);
+        const grandTotal = calculateGrandTotal(items) + payload.price;
 
         return {
           ...state,
@@ -52,23 +43,19 @@ export const reducer = (
           list: {
             ...state.list,
             grandTotal,
-            items: [{ ...pay }, ...items],
+            items: [{ ...payload }, ...items],
           },
         };
       }
     case "list/init edit item":
-      pay = payload as GetPayLoadType<AppActions, typeof type>;
-
       return {
         ...state,
-        toolbar: { ...state.toolbar, item: pay },
+        toolbar: { ...state.toolbar, item: payload },
       };
     case "list/confirm trash item":
-      pay = payload as GetPayLoadType<AppActions, typeof type>;
-
       return {
         ...state,
-        confirm: { ...state.confirm, item: pay },
+        confirm: { ...state.confirm, item: payload },
       };
     case "confirm/abort trash":
       return {
@@ -76,10 +63,8 @@ export const reducer = (
         confirm: { ...state.confirm, item: undefined },
       };
     case "confirm/proceed to trash":
-      pay = payload as GetPayLoadType<AppActions, typeof type>;
-
-      if (typeof pay.id === "number") {
-        const items = removeItem(state.list.items, pay.id);
+      if (typeof payload.id === "number") {
+        const items = removeItem(state.list.items, payload.id);
         const grandTotal = calculateGrandTotal(items);
 
         return {
