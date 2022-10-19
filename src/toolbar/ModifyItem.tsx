@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { CheckCircleIcon, PencilIcon, XIcon } from "@heroicons/react/solid";
 import { GroceryItem } from "../types";
 import { emptyGroceryItem, isGroceryItemValid } from "../utils";
-import { action, useAppStore } from "../store/App.store";
+import { useAppStore } from "../store/App.store";
 
 export interface ModifyItemProps {
   item?: GroceryItem;
@@ -28,7 +28,7 @@ export function ModifyItem({ item }: ModifyItemProps) {
 
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     if (isGroceryItemValid(draft)) {
-      dispatch(action("toolbar/submit form", draft));
+      dispatch({ type: "toolbar/submit form", payload: draft });
       setDraftItem(emptyGroceryItem);
     }
     e.preventDefault();
@@ -106,7 +106,7 @@ export function ModifyItem({ item }: ModifyItemProps) {
           <div className="px-4 py-3 bg-blue-300 text-right select-none sm:px-6">
             {!isNewItem && (
               <button
-                onClick={() => dispatch(action("toolbar/reset form"))}
+                onClick={() => dispatch({ type: "toolbar/reset form" })}
                 className="mr-2 button-standard">
                 <span className="inline-flex">
                   <XIcon className="icon-standard" />

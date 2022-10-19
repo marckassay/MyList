@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
-import { AppActions, AppState, GroceryItem, ActionReturnType } from "../types";
+import type { ReduxExtends } from "zustand-redux-extends-type";
+import { AppActions, AppState, GroceryItem } from "../types";
 import { calculateGrandTotal, newId } from "../utils";
 
 const removeItem = (value: GroceryItem[] | undefined, id: number) =>
@@ -10,7 +11,7 @@ const copyArray = (value: GroceryItem[] | undefined) =>
 
 export const reducer = (
   state: AppState,
-  { type, payload }: ActionReturnType<AppActions>
+  { type, payload }: ReduxExtends<AppActions>
 ): AppState => {
   switch (type) {
     case "toolbar/reset form":

@@ -2,7 +2,7 @@ import { Fragment, useRef } from "react";
 import { ExclamationCircleIcon, XIcon } from "@heroicons/react/solid";
 import { Dialog, Transition } from "@headlessui/react";
 import { Children, GroceryItem } from "./types";
-import { action, useAppStore } from "./store/App.store";
+import { useAppStore } from "./store/App.store";
 
 /**
  * creates 'key: value' array to be listed in confirmation
@@ -36,7 +36,7 @@ export function ConfirmationModal({ children }: Children) {
             as="div"
             className="relative z-10"
             initialFocus={cancelButtonRef}
-            onClose={() => dispatch(action("confirm/abort trash"))}>
+            onClose={() => dispatch({ type: "confirm/abort trash" })}>
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -88,7 +88,11 @@ export function ConfirmationModal({ children }: Children) {
                         type="button"
                         className="button-standard"
                         ref={cancelButtonRef}
-                        onClick={() => dispatch(action("confirm/abort trash"))}>
+                        onClick={() =>
+                          dispatch({
+                            type: "confirm/abort trash",
+                          })
+                        }>
                         <span className="inline-flex">
                           <XIcon className="icon-standard" />
                           Cancel
@@ -99,7 +103,10 @@ export function ConfirmationModal({ children }: Children) {
                           type="button"
                           className="button-danger"
                           onClick={() =>
-                            dispatch(action("confirm/proceed to trash", item))
+                            dispatch({
+                              type: "confirm/proceed to trash",
+                              payload: item,
+                            })
                           }>
                           <span className="inline-flex">
                             <ExclamationCircleIcon className="icon-standard" />

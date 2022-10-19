@@ -1,6 +1,6 @@
 import { devtools, redux } from "zustand/middleware";
 import create from "zustand";
-import { AppActions, AppState, createActions } from "../types";
+import { AppState } from "../types";
 import { calculateGrandTotal, initialItems } from "../utils";
 import { reducer } from "./App.actions";
 
@@ -26,5 +26,3 @@ useAppStore.setState({
     items: [...initialItems],
   },
 });
-
-export const { action } = createActions<AppActions>();
